@@ -6,7 +6,7 @@
 using std::string;
 using std::stringstream;
 
-Coronel::Coronel(int num , int ran):Token(num, ran){
+Coronel::Coronel(int player , int range):Token(player, range){
 	
 }
 

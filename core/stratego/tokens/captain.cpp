@@ -6,7 +6,7 @@
 using std::string;
 using std::stringstream;
 
-Captain::Captain(int num, int ran):Token(num, ran){
+Captain::Captain(int player, int range):Token(player, range){
 	
 }
 

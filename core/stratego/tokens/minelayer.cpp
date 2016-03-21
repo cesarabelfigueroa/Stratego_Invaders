@@ -6,7 +6,7 @@
 using std::string;
 using std::stringstream;
 
-Minelayer::Minelayer(int num, int ran):Token(num,ran){
+Minelayer::Minelayer(int player, int range):Token(player,range){
 	
 }
 

@@ -6,7 +6,7 @@
 using std::string;
 using std::stringstream;
 
-Commander::Commander(int num, int ran): Token(num, ran){
+Commander::Commander(int player, int range): Token(player, range){
 	
 }
 

@@ -6,7 +6,7 @@
 using std::string;
 using std::stringstream;
 
-Explorer::Explorer(int num, int ran):Token(num,ran){
+Explorer::Explorer(int player, int range):Token(player,range){
 	
 }
 

@@ -6,7 +6,7 @@
 using std::string;
 using std::stringstream;
 
-Marshal::Marshal(int num, int ran): Token(num, ran){
+Marshal::Marshal(int player, int range): Token(player, range){
 	
 }
 

@@ -6,7 +6,7 @@
 using std::string;
 using std::stringstream;
 
-Spy::Spy(int num, int ran): Token(num, ran){
+Spy::Spy(int player, int range): Token(player, range){
 	
 }
 

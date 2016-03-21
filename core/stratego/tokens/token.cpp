@@ -5,7 +5,7 @@
 using std::string;
 using std::stringstream;
 
-Token::Token(int n, int j):rango(j), jugador(n){
+Token::Token(int player, int range):range(range), player(player){
 
 }
 		
@@ -19,6 +19,6 @@ string Token::toString()const{
 	return ss.str();
 }	
 
-int Token::getRango()const{
-	return rango;
+int Token::getRange()const{
+	return range;
 }	

@@ -6,7 +6,7 @@
 using std::string;
 using std::stringstream;
 
-General::General(int num, int ran):Token(num, ran){
+General::General(int player, int range):Token(player, range){
 	
 }
 

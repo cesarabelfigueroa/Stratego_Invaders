@@ -6,7 +6,7 @@
 using std::string;
 using std::stringstream;
 
-Flag::Flag(int num, int ran):Token(num, ran){
+Flag::Flag(int player, int range):Token(player, range){
 	
 }
 

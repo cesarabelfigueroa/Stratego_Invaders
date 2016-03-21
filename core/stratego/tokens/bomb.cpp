@@ -6,7 +6,7 @@
 using std::string;
 using std::stringstream;
 
-Bomb::Bomb(int num, int ran):Token(num, ran){
+Bomb::Bomb(int player, int range):Token(player, range){
 	
 }
 
