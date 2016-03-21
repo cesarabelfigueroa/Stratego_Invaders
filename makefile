@@ -1,7 +1,7 @@
 productions: space_invaders stratego clean
 
 space_invaders: space_invaders.o
-	g++ space_invaders.o -o productions/space_invaders/main.exe `pkg-config --libs allegro-5.0` -lallegro -lallegro_ttf  -lallegro_primitives -lallegro_main -lallegro_font -lallegro_image -lallegro_audio -lallegro_acodec
+	g++ space_invaders.o -o productions/space_invaders/space_invaders `pkg-config --libs allegro-5.0` -lallegro -lallegro_ttf  -lallegro_primitives -lallegro_main -lallegro_font -lallegro_image -lallegro_audio -lallegro_acodec
 
 space_invaders.o:	core/space_invaders/space_invaders.cpp 
 	g++ -c core/space_invaders/space_invaders.cpp 
@@ -53,3 +53,5 @@ flag.o: core/stratego/tokens/token.h core/stratego/tokens/flag.h core/stratego/t
 
 clean: 
 	rm *.o
+
+
