@@ -9,47 +9,47 @@ space_invaders.o:	core/space_invaders/space_invaders.cpp
 stratego: stratego.o marshal.o token.o general.o coronel.o commander.o captain.o lieutenant.o sergeant.o minelayer.o explorer.o spy.o bomb.o flag.o
 	g++ stratego.o marshal.o token.o general.o coronel.o commander.o captain.o lieutenant.o sergeant.o minelayer.o explorer.o spy.o bomb.o flag.o -o productions/stratego/stratego
 
-stratego.o: core/stratego/stratego.cpp core/stratego/token.h core/stratego/marshal.h
+stratego.o: core/stratego/stratego.cpp core/stratego/tokens/token.h core/stratego/tokens/marshal.h core/stratego/tokens/general.h core/stratego/tokens/coronel.h core/stratego/tokens/commander.h core/stratego/tokens/captain.h core/stratego/tokens/lieutenant.h core/stratego/tokens/sergeant.h core/stratego/tokens/minelayer.h core/stratego/tokens/explorer.h core/stratego/tokens/spy.h core/stratego/tokens/bomb.h core/stratego/tokens/flag.h
 	g++ -c core/stratego/stratego.cpp
 
-token.o: core/stratego/token.h core/stratego/token.cpp
-	g++ -c core/stratego/token.cpp
+token.o: core/stratego/tokens/token.h core/stratego/tokens/token.cpp
+	g++ -c core/stratego/tokens/token.cpp
 
-marshal.o: core/stratego/token.h  core/stratego/marshal.h  core/stratego/marshal.cpp
-	g++ -c core/stratego/marshal.cpp
+marshal.o: core/stratego/tokens/token.h  core/stratego/tokens/marshal.h  core/stratego/tokens/marshal.cpp
+	g++ -c core/stratego/tokens/marshal.cpp
 
-general.o: core/stratego/token.h core/stratego/general.h core/stratego/general.cpp
-	g++ -c core/stratego/general.cpp
+general.o: core/stratego/tokens/token.h core/stratego/tokens/general.h core/stratego/tokens/general.cpp
+	g++ -c core/stratego/tokens/general.cpp
 
-coronel.o: core/stratego/token.h core/stratego/coronel.h core/stratego/coronel.cpp
-	g++ -c core/stratego/coronel.cpp
+coronel.o: core/stratego/tokens/token.h core/stratego/tokens/coronel.h core/stratego/tokens/coronel.cpp
+	g++ -c core/stratego/tokens/coronel.cpp
 
-commander.o: core/stratego/token.h core/stratego/commander.h core/stratego/commander.cpp
-	g++ -c core/stratego/commander.cpp
+commander.o: core/stratego/tokens/token.h core/stratego/tokens/commander.h core/stratego/tokens/commander.cpp
+	g++ -c core/stratego/tokens/commander.cpp
 
-captain.o: core/stratego/token.h core/stratego/captain.h core/stratego/captain.cpp
-	g++ -c core/stratego/captain.cpp
+captain.o: core/stratego/tokens/token.h core/stratego/tokens/captain.h core/stratego/tokens/captain.cpp
+	g++ -c core/stratego/tokens/captain.cpp
 
-lieutenant.o: core/stratego/token.h core/stratego/lieutenant.h core/stratego/lieutenant.cpp
-	g++ -c core/stratego/lieutenant.cpp
+lieutenant.o: core/stratego/tokens/token.h core/stratego/tokens/lieutenant.h core/stratego/tokens/lieutenant.cpp
+	g++ -c core/stratego/tokens/lieutenant.cpp
 
-sergeant.o: core/stratego/token.h core/stratego/sergeant.h core/stratego/sergeant.cpp
-	g++ -c core/stratego/sergeant.cpp
+sergeant.o: core/stratego/tokens/token.h core/stratego/tokens/sergeant.h core/stratego/tokens/sergeant.cpp
+	g++ -c core/stratego/tokens/sergeant.cpp
 
-minelayer.o: core/stratego/token.h core/stratego/minelayer.h core/stratego/minelayer.cpp
-	g++ -c core/stratego/minelayer.cpp
+minelayer.o: core/stratego/tokens/token.h core/stratego/tokens/minelayer.h core/stratego/tokens/minelayer.cpp
+	g++ -c core/stratego/tokens/minelayer.cpp
 
-explorer.o: core/stratego/token.h core/stratego/explorer.h core/stratego/explorer.cpp
-	g++ -c core/stratego/explorer.cpp
+explorer.o: core/stratego/tokens/token.h core/stratego/tokens/explorer.h core/stratego/tokens/explorer.cpp
+	g++ -c core/stratego/tokens/explorer.cpp
 
-spy.o: core/stratego/token.h core/stratego/spy.h core/stratego/spy.cpp
-	g++ -c core/stratego/spy.cpp
+spy.o: core/stratego/tokens/token.h core/stratego/tokens/spy.h core/stratego/tokens/spy.cpp
+	g++ -c core/stratego/tokens/spy.cpp
 
-bomb.o: core/stratego/token.h core/stratego/bomb.h core/stratego/bomb.cpp
-	g++ -c core/stratego/bomb.cpp
+bomb.o: core/stratego/tokens/token.h core/stratego/tokens/bomb.h core/stratego/tokens/bomb.cpp
+	g++ -c core/stratego/tokens/bomb.cpp
 
-flag.o: core/stratego/token.h core/stratego/flag.h core/stratego/flag.cpp
-	g++ -c core/stratego/flag.cpp
+flag.o: core/stratego/tokens/token.h core/stratego/tokens/flag.h core/stratego/tokens/flag.cpp
+	g++ -c core/stratego/tokens/flag.cpp
 
 clean: 
 	rm *.o
