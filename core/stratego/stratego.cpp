@@ -27,7 +27,7 @@ void selectFormations(char**, int);
 void destroyBoard(Token***);
 
 int main(int argc, char*argv[]){
-	char** formation = createFormation();
+	char** formation = createFormation();//Crea un arreglo de chars para la formacion.
 	int player = 0;
 	int choice;
 	int counter = 1;
@@ -41,10 +41,11 @@ int main(int argc, char*argv[]){
 		cout << "Antes de empezar, cada jugador debe elegir una formacion inicial! " << endl;
 		cout << "1. Formacion defensiva con bombas" << endl;
 		cout << "2. Formacion defensiva con bombas y escolta de alto rango " << endl;
-		cout << "3. Formacion semi-ofensiva con espias en las lineas frontales" << endl;
+		cout << "3. Formacion semi-ofensiva con exploradores en las lineas frontales" << endl;
 		cout << "4. Formacion ofesniva con guerreros de alto rango al frente" << endl;
 		cout << "Seleccione una opcion: ";
 		cin >> choice;
+		selectFormations(formation,choice);//dependiendo de la formacion que eeligio va a retornar un arreglo de chars con ella.
 		counter++;	
 	}
 	destroyBoard(board);
@@ -79,8 +80,15 @@ char** createFormation(){
 }
 
 void selectFormations(char** formation, int choice){
-	
-			
+	if(choice == 1){
+		
+	}else if(choice == 2){
+	//formaciones cesar
+	}else if(choice == 3){
+	//formaciones cesar
+	}else if(choice == 4){
+
+	}			
 }
 
 void destroyBoard(Token*** board){
