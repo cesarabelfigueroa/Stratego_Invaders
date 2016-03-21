@@ -21,13 +21,11 @@ using std::endl;
 using std::cin;
 
 Token*** createBoard();
-char** createFormation();
 void initializeBoard(Token***);
-void selectFormations(char**, int);
+void applyFormations(Token***,int, int);
 void destroyBoard(Token***);
 
 int main(int argc, char*argv[]){
-	char** formation = createFormation();//Crea un arreglo de chars para la formacion.
 	int player = 0;
 	int choice;
 	int counter = 1;
@@ -45,7 +43,7 @@ int main(int argc, char*argv[]){
 		cout << "4. Formacion ofesniva con guerreros de alto rango al frente" << endl;
 		cout << "Seleccione una opcion: ";
 		cin >> choice;
-		selectFormations(formation,choice);//dependiendo de la formacion que eeligio va a retornar un arreglo de chars con ella.
+		applyFormations(board,choice, counter);
 		counter++;	
 	}
 	destroyBoard(board);
@@ -79,9 +77,9 @@ char** createFormation(){
 	return formation;
 }
 
-void selectFormations(char** formation, int choice){
+void applyFormations(Token*** board,int choice, int player){
 	if(choice == 1){
-		
+					
 	}else if(choice == 2){
 	//formaciones cesar
 	}else if(choice == 3){
@@ -90,6 +88,7 @@ void selectFormations(char** formation, int choice){
 
 	}			
 }
+
 
 void destroyBoard(Token*** board){
 	for(int i = 0; i < 10; i++){
