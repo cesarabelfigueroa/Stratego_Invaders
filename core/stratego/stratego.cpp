@@ -32,6 +32,7 @@ void fillBoardRandomly(Token***, vector<Token*>&, int);
 void showBoard(Token***, int);
 int lettersToNumbers(char);
 int charToInt(char);
+bool verifyActualPosition(Token***, int, int, int);
 void destroyBoard(Token***);
 
 int main(int argc, char*argv[]){
@@ -40,7 +41,9 @@ int main(int argc, char*argv[]){
 	char coordenatesInLetters[5];
 	int coordenatesInNumbers[4];
 	int counter = 1;
-	bool continuePlaying = true;	
+	bool continuePlaying = true;
+	bool verifyCurrentPosition = false;
+		
 	Token*** board = createBoard();
 	initializeBoard(board);
 	
@@ -61,22 +64,38 @@ int main(int argc, char*argv[]){
 		if(player ==1){
 			cout << "***********JUGADOR 1*************" << endl;
 			showBoard(board,player);
-			cout << "Ingrese la jugada segun el tablero: ";
-			cin >> coordenatesInLetters;
-			coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
-			coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
-			coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
-			coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
+			while(!verifyCurrentPosition){			
+				cout << "Ingrese la jugada segun el tablero: ";		
+				cin >> coordenatesInLetters;
+				coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
+				coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
+				coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
+				coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
+				verifyCurrentPosition = verifyActualPosition(board, coordenatesInNumbers[0], coordenatesInNumbers[1],player);
+				
+				if(!verifyCurrentPosition){
+					cout << "En esta casilla no hay una pieza propia" << endl;
+				}
+			}
+			verifyCurrentPosition = false;
 			player = 2;
 		}else if(player == 2){
 			cout << "***********JUGADOR 2*************" << endl;
 			showBoard(board,player);
-			cout << "Ingrese la jugada segun el tablero: ";
-			cin >> coordenatesInLetters;
-			coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
-			coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
-			coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
-			coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
+			while(!verifyCurrentPosition){			
+				cout << "Ingrese la jugada segun el tablero: ";		
+				cin >> coordenatesInLetters;
+				coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
+				coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
+				coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
+				coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
+				verifyCurrentPosition = verifyActualPosition(board, coordenatesInNumbers[0], coordenatesInNumbers[1],player);
+				
+				if(!verifyCurrentPosition){
+					cout << "En esta casilla no hay una pieza propia" << endl;
+				}
+			}
+			verifyCurrentPosition = false;
 			player = 1;
 		}
 	}
@@ -310,6 +329,19 @@ int charToInt(char letra){
                 return 0;
         }
 }
+
+bool verifyActualPosition(Token*** board, int row, int column, int player){
+	if(board[row][column] == NULL){
+		return false;
+	}else{
+		if(player == board[row][column]->getPlayer()){
+			return true;
+		}else{
+			return false; 
+		}
+	}
+}
+
 void showBoard(Token*** board, int player){
 	if(player == 1){
 		for(int i = 0; i < 10; i++){
