@@ -33,6 +33,7 @@ void showBoard(Token***, int);
 int lettersToNumbers(char);
 int charToInt(char);
 bool verifyCoordenates(int[]);
+bool movementValidations(Token***, int[]);
 bool verifyActualPosition(Token***, int, int, int);
 int verifyNextPosition(Token***, int, int, int); //Retorna 1 si esta vacia, 2 si hay una pieza contaria; 3 si hay una pieza propia.
 void move(Token***, int[]);
@@ -45,6 +46,7 @@ int main(int argc, char*argv[]){
 	int coordenatesInNumbers[4];
 	int counter = 1;
 	int nextPosition = 3;
+	bool correctMovement = false;
 	bool continuePlaying = true;
 	bool verifyCurrentPosition = false;
 	bool correctCoordenates = false;	
@@ -68,82 +70,111 @@ int main(int argc, char*argv[]){
 		if(player ==1){
 			cout << "***********JUGADOR 1*************" << endl;
 			showBoard(board,player);
-
-			while(nextPosition == 3){
-				while(!verifyCurrentPosition){
-					while(!correctCoordenates){
-						cout << "Ingrese la jugada segun el tablero: ";		
-						cin >> coordenatesInLetters;
-						coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
-						coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
-						coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
-						coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
-						correctCoordenates = verifyCoordenates(coordenatesInNumbers);
-						
-						if(!correctCoordenates){
-							cout << "Posicion no valida" << endl;
-						}
-					}			
-					verifyCurrentPosition = verifyActualPosition(board, coordenatesInNumbers[0], 
+			
+			while(!correctMovement){//No sale mientras el movimiento de esa pieza no sea valido
+				while(nextPosition == 3){//no sale mientras la casilla a la que desea mover sea propia
+					while(!verifyCurrentPosition){//no sale mientras la casilla no sea de su ejercito
+						while(!correctCoordenates){//no sale mientras coordenadas no sean correctas
+							cout << "Ingrese la jugada segun el tablero: ";		
+							cin >> coordenatesInLetters;
+							coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
+							coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
+							coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
+							coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
+							correctCoordenates = verifyCoordenates(coordenatesInNumbers);
+							
+							if(!correctCoordenates){
+								cout << "Posicion no valida" << endl;
+							}
+						}			
+						verifyCurrentPosition = verifyActualPosition(board, coordenatesInNumbers[0], 
 coordenatesInNumbers[1],player);
 			
-					if(!verifyCurrentPosition){
-						cout << "En esta casilla no hay una pieza propia" << endl;
-						correctCoordenates = false;
+						if(!verifyCurrentPosition){
+							cout << "En esta casilla no hay una pieza propia" << endl;
+							correctCoordenates = false;
+						}
 					}
-				}
-				nextPosition = verifyNextPosition(board,coordenatesInNumbers[2], coordenatesInNumbers[2],player);
-				if(nextPosition == 3){
-					cout << "Movimiento invalido" << endl;
+					nextPosition = verifyNextPosition(board,coordenatesInNumbers[2], coordenatesInNumbers[2],player);
+					if(nextPosition == 3){
+						cout << "Movimiento invalido" << endl;
+						verifyCurrentPosition = false;
+						correctCoordenates = false;
+					}	
+				}	
+								
+					
+				correctMovement = movementValidations(board, coordenatesInNumbers);
+				if(!correctMovement){
+					cout << "Movimiento de pieza invalido" << endl;
 					verifyCurrentPosition = false;
 					correctCoordenates = false;
-				}	
+					nextPosition = 3;
+				}
 			}
 			
-			if(nextPosition == 1){
+			if(nextPosition == 1){//nextPosition == 1 significa que la siguiente casilla este vacia
 				move(board, coordenatesInNumbers);
-			}			
+			}else if(nextPosition == 2){//nextPosition == 2 significa que en la casilla siguiente hay un enemigo
+				//Metodos y validaciones para comer (Cesar)
+			}		
+			correctMovement = false;	
 			nextPosition = 3;
 			correctCoordenates = false;
 			verifyCurrentPosition = false;
 			player = 2;
+//***********************************************************************************************************************************
 		}else if(player == 2){
-			cout << "***********JUGADOR 1*************" << endl;
+			cout << "***********JUGADOR 2*************" << endl;
 			showBoard(board,player);
-			while(nextPosition == 3){
-				while(!verifyCurrentPosition){
-					while(!correctCoordenates){
-						cout << "Ingrese la jugada segun el tablero: ";		
-						cin >> coordenatesInLetters;
-						coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
-						coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
-						coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
-						coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
-						correctCoordenates = verifyCoordenates(coordenatesInNumbers);
-						
-						if(!correctCoordenates){
-							cout << "Posicion no valida" << endl;
-						}
-					}			
-					verifyCurrentPosition = verifyActualPosition(board, coordenatesInNumbers[0], 
+			while(!correctMovement){
+				while(nextPosition == 3){
+					while(!verifyCurrentPosition){
+						while(!correctCoordenates){
+							cout << "Ingrese la jugada segun el tablero: ";		
+							cin >> coordenatesInLetters;
+							coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
+							coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
+							coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
+							coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
+							correctCoordenates = verifyCoordenates(coordenatesInNumbers);
+							
+							if(!correctCoordenates){
+								cout << "Posicion no valida" << endl;
+							}
+						}			
+						verifyCurrentPosition = verifyActualPosition(board, coordenatesInNumbers[0], 
 coordenatesInNumbers[1],player);
 			
-					if(!verifyCurrentPosition){
-						cout << "En esta casilla no hay una pieza propia" << endl;
-						correctCoordenates = false;
+						if(!verifyCurrentPosition){
+							cout << "En esta casilla no hay una pieza propia" << endl;
+							correctCoordenates = false;
+						}
 					}
-				}
-				nextPosition = verifyNextPosition(board,coordenatesInNumbers[2], coordenatesInNumbers[2],player);
-				if(nextPosition == 3){
-					cout << "Movimiento invalido" << endl;
+					nextPosition = verifyNextPosition(board,coordenatesInNumbers[2], coordenatesInNumbers[2],player);
+					if(nextPosition == 3){
+						cout << "Movimiento invalido" << endl;
+						verifyCurrentPosition = false;
+						correctCoordenates = false;
+					}	
+				}	
+								
+					
+				correctMovement = movementValidations(board, coordenatesInNumbers);
+				if(!correctMovement){
+					cout << "Movimiento de pieza invalido" << endl;
 					verifyCurrentPosition = false;
 					correctCoordenates = false;
-				}	
+					nextPosition = 3;
+				}
 			}
 			
 			if(nextPosition == 1){
 				move(board, coordenatesInNumbers);
-			}			
+			}else if(nextPosition == 2){
+				//Metodos y validaciones para comer (Cesar)
+			}	
+			correctMovement = false;		
 			nextPosition = 3;
 			correctCoordenates = false;
 			verifyCurrentPosition = false;
@@ -413,6 +444,29 @@ int verifyNextPosition(Token*** board, int row, int column, int player){
 		return 3;
 	}
 	
+}
+
+
+bool movementValidations(Token*** board, int positions[]){
+	bool answer = false;
+
+	if(board[positions[0]][positions[1]] -> toString() == "Explorer"){
+		if(positions[0] == positions[2] || positions[1] == positions[3]){
+			answer = true;
+		}
+	}else if(board[positions[0]][positions[1]] -> toString() != "Flag"){
+		if(positions[0] == positions[2] && positions[3] == positions[1] +1){
+			answer = true;
+		}else if(positions[0] == positions[2] && positions[3] == positions[1] -1){
+			answer = true;	
+		}else if(positions[1] == positions[3] && positions[2] == positions[0] +1){
+			answer = true;
+		}else if(positions[1] == positions[3] && positions[2] == positions[0] -1){
+			answer = true;
+		}			
+	}
+	
+	return answer;
 }
 
 void move(Token*** board, int coordenates[]){
