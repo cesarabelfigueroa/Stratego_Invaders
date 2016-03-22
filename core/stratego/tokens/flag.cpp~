@@ -16,6 +16,6 @@ Flag::~Flag(){
 
 string Flag::toString()const{
 	stringstream ss;
-	ss << "Flag";
+	ss << "Bandera";
 	return ss.str();
 }

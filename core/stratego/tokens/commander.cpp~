@@ -16,6 +16,6 @@ Commander::~Commander(){
 
 string Commander::toString()const{
 	stringstream ss;
-	ss << "Commander";
+	ss << "Comandante";
 	return ss.str();
 }
