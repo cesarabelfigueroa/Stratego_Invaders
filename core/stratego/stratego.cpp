@@ -14,6 +14,8 @@
 #include <typeinfo>
 #include <iostream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 using std::vector;
 using std::cout;
@@ -23,6 +25,8 @@ using std::cin;
 Token*** createBoard();
 void initializeBoard(Token***);
 void applyFormations(Token***,int, int);
+void bombFormation(Token***, int);
+void fillBoardRandomly(Token***, vector<Token*>&, int);
 void destroyBoard(Token***);
 
 int main(int argc, char*argv[]){
@@ -43,7 +47,7 @@ int main(int argc, char*argv[]){
 		cout << "4. Formacion ofesniva con guerreros de alto rango al frente" << endl;
 		cout << "Seleccione una opcion: ";
 		cin >> choice;
-		applyFormations(board,choice, counter);
+		applyFormations(board,choice,counter);
 		counter++;	
 	}
 	destroyBoard(board);
@@ -67,19 +71,9 @@ void initializeBoard(Token*** board){
 	}
 }
 
-char** createFormation(){
-	char** formation = new char*[4];
-
-	for(int i = 0; i < 4; i++){
-		formation[i] = new char[10];
-	}
-	
-	return formation;
-}
-
 void applyFormations(Token*** board,int choice, int player){
 	if(choice == 1){
-					
+		bombFormation(board,player);							
 	}else if(choice == 2){
 	//formaciones cesar
 	}else if(choice == 3){
@@ -89,6 +83,78 @@ void applyFormations(Token*** board,int choice, int player){
 	}			
 }
 
+void bombFormation(Token*** board, int player){
+	vector<Token*> tokens;
+
+	board[8][5] = new Flag(player);
+	board[7][4] = new Bomb(player);
+	board[7][5] = new Bomb(player);
+	board[7][6] = new Bomb(player);
+	board[8][4] = new Bomb(player);
+	board[8][6] = new Bomb(player);
+	board[9][4] = new Bomb(player);
+	
+	tokens.push_back(new Marshal(player));
+	tokens.push_back(new General(player));
+	
+	for(int i = 0; i < 2; i++){
+		tokens.push_back(new Coronel(player));
+	}
+
+	for(int i = 0; i < 3; i++){
+		tokens.push_back(new Commander(player));
+	}
+
+	for(int i = 0; i < 4; i++){
+		tokens.push_back(new Captain(player));
+		tokens.push_back(new Lieutenant(player));
+		tokens.push_back(new Sergeant(player));
+		tokens.push_back(new Minelayer(player));
+		tokens.push_back(new Explorer(player));
+		tokens.push_back(new Explorer(player));
+	}
+	tokens.push_back(new Minelayer(player));
+	tokens.push_back(new Spy(player));
+
+	fillBoardRandomly(board,tokens,player);
+}
+
+void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
+	srand(time(NULL));
+	vector<int> numbers;
+	int position;
+	
+	if(player == 1){
+		for(int i = 6; i < 10; i++){
+			cout << " 1 for" << endl;
+			for(int k = 0; k < 10; k++){
+				cout << " 2 for" << endl;
+				position = 0 + rand()%(tokens.size() - 0);
+				cout << position << endl;
+				
+				if(board[i][k] == NULL){
+					cout << "If bueno" << endl;
+					numbers.push_back(position);
+					board[i][k] = tokens[position];
+				}
+				
+				cout << "Sale for 2" << endl;	
+			}
+			cout << "Sale for 1" << endl;
+		}
+	}else if(player == 2){
+		for(int i = 0; i < 3; i++){
+			for(int k = 0; k < 10; k++){
+				position = 0 + rand()%(tokens.size() - 0);
+				
+				if(board[i][k] == NULL){
+					numbers.push_back(position);
+					board[i][k] = tokens[position];
+				}	
+			}
+		}
+	}
+}
 
 void destroyBoard(Token*** board){
 	for(int i = 0; i < 10; i++){
