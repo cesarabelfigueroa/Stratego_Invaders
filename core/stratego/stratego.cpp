@@ -123,34 +123,46 @@ void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
 	srand(time(NULL));
 	vector<int> numbers;
 	int position;
+	bool verifyNumber = false;
 	
 	if(player == 1){
 		for(int i = 6; i < 10; i++){
-			cout << " 1 for" << endl;
 			for(int k = 0; k < 10; k++){
-				cout << " 2 for" << endl;
 				position = 0 + rand()%(tokens.size() - 0);
-				cout << position << endl;
-				
-				if(board[i][k] == NULL){
-					cout << "If bueno" << endl;
-					numbers.push_back(position);
-					board[i][k] = tokens[position];
+				for(int j = 0; j < numbers.size(); j++){
+					if(numbers[j] == position)
+						verifyNumber = true;
 				}
 				
-				cout << "Sale for 2" << endl;	
+				if(verifyNumber){
+					k--;
+				}else{	
+					if(board[i][k] == NULL){
+						numbers.push_back(position);
+						board[i][k] = tokens[position];
+					}
+				}
+				verifyNumber = false;	
 			}
-			cout << "Sale for 1" << endl;
 		}
 	}else if(player == 2){
 		for(int i = 0; i < 3; i++){
 			for(int k = 0; k < 10; k++){
 				position = 0 + rand()%(tokens.size() - 0);
+				for(int j = 0; j < numbers.size(); j++){
+                                        if(numbers[j] == position)
+                                                verifyNumber = true;
+                                }
 				
-				if(board[i][k] == NULL){
-					numbers.push_back(position);
-					board[i][k] = tokens[position];
-				}	
+				if(verifyNumber){
+					k--;
+				}else{
+					if(board[i][k] == NULL){
+						numbers.push_back(position);
+						board[i][k] = tokens[position];
+					}
+				}
+				verifyNumber = false;	
 			}
 		}
 	}
