@@ -35,6 +35,8 @@ void destroyBoard(Token***);
 int main(int argc, char*argv[]){
 	int player = 1;
 	int choice;
+	char coordenatesInLetters[5];
+	int coordenatesInNumbers[4];
 	int counter = 1;
 	bool continuePlaying = true;	
 	Token*** board = createBoard();
@@ -52,7 +54,22 @@ int main(int argc, char*argv[]){
 		applyFormations(board,choice,counter);
 		counter++;	
 	}
-	showBoard(board,player);
+	
+	while(continuePlaying){
+		if(player ==1){
+			cout << "***********JUGADOR 1*************" << endl;
+			showBoard(board,player);
+			cout << "Ingrese la jugada segun el tablero: ";
+			cin >> coordenatesInLetters;
+			player = 2;
+		}else if(player == 2){
+			cout << "***********JUGADOR 2*************" << endl;
+			showBoard(board,player);
+			cout << "Ingrese la jugada segun el tablero: ";
+			cin >> coordenatesInLetters;
+			player = 1;
+		}
+	}
 	destroyBoard(board);
 	return 0;
 }
@@ -237,7 +254,10 @@ void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
 void showBoard(Token*** board, int player){
 	if(player == 1){
 		for(int i = 0; i < 10; i++){
-			for(int k = 0; k < 10; k++){
+			cout << 10 -i;
+			if(10-i<10)
+				cout << " ";
+			for(int k = 0; k < 10; k++){	
 				if(board[i][k] == NULL){
 					cout << "[   ]";
 				}else if(board[i][k]->getPlayer()==1){
@@ -248,7 +268,7 @@ void showBoard(Token*** board, int player){
 					}else if(board[i][k]->toString() == "Coronel"){
 						cout << "[ C ]";
 					}else if(board[i][k]->toString() == "Commander"){
-							cout << "[ O ]";
+						cout << "[ O ]";
 					}else if(board[i][k]->toString() == "Captain"){	
 						cout << "[ A ]";
 					}else if(board[i][k]->toString() == "Lieutenant"){
@@ -272,8 +292,12 @@ void showBoard(Token*** board, int player){
 			}
 			cout << "\n";
 		}
+		cout << "    A    B    C    D    E    F    G    H    I    J" << endl;
 	}else if(player == 2){
 		for(int i = 0; i < 10; i++){
+			cout << 10 -i;
+			if(10-i<10)
+				cout << " ";
 			for(int k = 0; k < 10; k++){
 				if(board[i][k] == NULL){
 					cout << "[   ]";
@@ -285,7 +309,7 @@ void showBoard(Token*** board, int player){
 					}else if(board[i][k]->toString() == "Coronel"){
 						cout << "[ C ]";
 					}else if(board[i][k]->toString() == "Commander"){
-							cout << "[ O ]";
+						cout << "[ O ]";
 					}else if(board[i][k]->toString() == "Captain"){	
 						cout << "[ A ]";
 					}else if(board[i][k]->toString() == "Lieutenant"){
@@ -309,6 +333,7 @@ void showBoard(Token*** board, int player){
 			}
 			cout << "\n";
 		}
+		cout << "    A    B    C    D    E    F    G    H    I    J" << endl;
 	}
 }
 
