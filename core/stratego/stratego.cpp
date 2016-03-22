@@ -34,6 +34,7 @@ int lettersToNumbers(char);
 int charToInt(char);
 bool verifyCoordenates(int[]);
 bool movementValidations(Token***, int[]);
+bool explorerValidation(Token***, int[]);
 bool verifyActualPosition(Token***, int, int, int);
 int verifyNextPosition(Token***, int, int, int); //Retorna 1 si esta vacia, 2 si hay una pieza contaria; 3 si hay una pieza propia.
 void move(Token***, int[]);
@@ -95,7 +96,7 @@ coordenatesInNumbers[1],player);
 							correctCoordenates = false;
 						}
 					}
-					nextPosition = verifyNextPosition(board,coordenatesInNumbers[2], coordenatesInNumbers[2],player);
+					nextPosition = verifyNextPosition(board,coordenatesInNumbers[2], coordenatesInNumbers[3],player);
 					if(nextPosition == 3){
 						cout << "Movimiento invalido" << endl;
 						verifyCurrentPosition = false;
@@ -151,7 +152,7 @@ coordenatesInNumbers[1],player);
 							correctCoordenates = false;
 						}
 					}
-					nextPosition = verifyNextPosition(board,coordenatesInNumbers[2], coordenatesInNumbers[2],player);
+					nextPosition = verifyNextPosition(board,coordenatesInNumbers[2], coordenatesInNumbers[3],player);
 					if(nextPosition == 3){
 						cout << "Movimiento invalido" << endl;
 						verifyCurrentPosition = false;
@@ -451,10 +452,12 @@ bool movementValidations(Token*** board, int positions[]){
 	bool answer = false;
 
 	if(board[positions[0]][positions[1]] -> toString() == "Explorer"){
-		if(positions[0] == positions[2] || positions[1] == positions[3]){
-			answer = true;
+		if(explorerValidation(board,positions)){
+			if(positions[0] == positions[2] || positions[1] == positions[3]){
+				answer = true;
+			}
 		}
-	}else if(board[positions[0]][positions[1]] -> toString() != "Flag"){
+	}else if(board[positions[0]][positions[1]] -> toString() != "Flag" && board[positions[0]][positions[1]] -> toString() != "Bomb"){
 		if(positions[0] == positions[2] && positions[3] == positions[1] +1){
 			answer = true;
 		}else if(positions[0] == positions[2] && positions[3] == positions[1] -1){
@@ -466,6 +469,40 @@ bool movementValidations(Token*** board, int positions[]){
 		}			
 	}
 	
+	return answer;
+}
+
+bool explorerValidation(Token*** board, int positions[]){
+	bool answer = true;
+	if(positions[0] == positions[2]){
+		if(positions[1] < positions[3]){
+			for(int i = positions[1]+1; i < positions[3]; i++){
+				if(board[positions[0]][i] != NULL){
+					answer = false;
+				}
+			}
+		}else if(positions[3] < positions[1]){
+			for(int i = positions[3] + 1; i < positions[1]; i++){
+				if(board[positions[0]][i] != false){
+					answer = false;
+				}
+			}
+		}
+	}else if(positions[1] == positions[3]){
+		if(positions[0] < positions[2]){
+			for(int i = positions[0]+1; i < positions[2]; i++){
+				if(board[i][positions[1]] != NULL){
+					answer = false;
+				}
+			}
+		}else if(positions[2] < positions[0]){
+			for(int i = positions[2] + 1; i < positions[0]; i++){
+				if(board[i][positions[1]] != NULL){
+					answer = false;
+				}
+			}
+		}	
+	}	
 	return answer;
 }
 
