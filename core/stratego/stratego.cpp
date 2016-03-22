@@ -181,12 +181,11 @@ void bombFormation(Token*** board, int player){
 }
 
 void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
-	srand(time(NULL));
-	vector<int> numbers;
-	int position = 0;
-	bool verifyNumber = false;
-	
 	if(player == 1){
+		srand(time(NULL));
+		vector<int> numbers;
+		int position;
+		bool verifyNumber = false;
 		for(int i = 6; i < 10; i++){
 			for(int k = 0; k < 10; k++){
 				verifyNumber = false;
@@ -207,14 +206,18 @@ void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
 			}
 		}
 	}else if(player == 2){
-		for(int i = 0; i < 4; i++){
+		srand(time(NULL));
+		vector<int> numbers;
+		int position;
+		bool verifyNumber = false;
+		for(int i = 3; i >= 0; i--){
 			for(int k = 0; k < 10; k++){
 				verifyNumber = false;
 				position = 0 + rand()%(tokens.size() - 0);
 				for(int j = 0; j < numbers.size(); j++){
-					if(numbers[j] == position){
+					if(numbers[j] == position)
 						verifyNumber = true;
-					}
+					
 				}
 				
 				if(verifyNumber){
@@ -232,37 +235,80 @@ void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
 }
 
 void showBoard(Token*** board, int player){
-	for(int i = 0; i < 10; i++){
-		for(int k = 0; k < 10; k++){
-			if(board[i][k] == NULL){
-				cout << "[   ]";
-			}else if(board[i][k]->toString() == "Marshal"){
-				cout << "[ M ]";
-			}else if(board[i][k]->toString() == "General"){
-				cout << "[ G ]";
-			}else if(board[i][k]->toString() == "Coronel"){
-				cout << "[ C ]";
-			}else if(board[i][k]->toString() == "Commander"){
-				cout << "[ O ]";
-			}else if(board[i][k]->toString() == "Captain"){	
-				cout << "[ A ]";
-			}else if(board[i][k]->toString() == "Lieutenant"){
-				cout << "[ T ]";
-			}else if(board[i][k]->toString() == "Sergeant"){
-				cout << "[ S ]";
-			}else if(board[i][k]->toString() == "Minelayer"){
-				cout << "[ X ]";
-			}else if(board[i][k]->toString() == "Explorer"){
-				cout << "[ E ]";
-			}else if(board[i][k]->toString() == "Spy"){		
-				cout << "[ P ]";
-			}else if(board[i][k]->toString() == "Bomb"){	
-				cout << "[ B ]";
-			}else if(board[i][k]->toString() == "Flag"){
-				cout << "[ N ]";
+	if(player == 1){
+		for(int i = 0; i < 10; i++){
+			for(int k = 0; k < 10; k++){
+				if(board[i][k] == NULL){
+					cout << "[   ]";
+				}else if(board[i][k]->getPlayer()==1){
+					 if(board[i][k]->toString() == "Marshal"){
+						cout << "[ M ]";
+					}else if(board[i][k]->toString() == "General"){
+						cout << "[ G ]";
+					}else if(board[i][k]->toString() == "Coronel"){
+						cout << "[ C ]";
+					}else if(board[i][k]->toString() == "Commander"){
+							cout << "[ O ]";
+					}else if(board[i][k]->toString() == "Captain"){	
+						cout << "[ A ]";
+					}else if(board[i][k]->toString() == "Lieutenant"){
+						cout << "[ T ]";
+					}else if(board[i][k]->toString() == "Sergeant"){
+						cout << "[ S ]";
+					}else if(board[i][k]->toString() == "Minelayer"){
+						cout << "[ X ]";
+					}else if(board[i][k]->toString() == "Explorer"){
+						cout << "[ E ]";
+					}else if(board[i][k]->toString() == "Spy"){		
+						cout << "[ P ]";
+					}else if(board[i][k]->toString() == "Bomb"){	
+						cout << "[ B ]";
+					}else if(board[i][k]->toString() == "Flag"){
+						cout << "[ N ]";
+					}
+				}else if(board[i][k] ->getPlayer() == 2){
+					cout << "[ * ]";
+				}
 			}
+			cout << "\n";
 		}
-		cout << "\n";
+	}else if(player == 2){
+		for(int i = 0; i < 10; i++){
+			for(int k = 0; k < 10; k++){
+				if(board[i][k] == NULL){
+					cout << "[   ]";
+				}else if(board[i][k]->getPlayer() ==2){
+					 if(board[i][k]->toString() == "Marshal"){
+						cout << "[ M ]";
+					}else if(board[i][k]->toString() == "General"){
+						cout << "[ G ]";
+					}else if(board[i][k]->toString() == "Coronel"){
+						cout << "[ C ]";
+					}else if(board[i][k]->toString() == "Commander"){
+							cout << "[ O ]";
+					}else if(board[i][k]->toString() == "Captain"){	
+						cout << "[ A ]";
+					}else if(board[i][k]->toString() == "Lieutenant"){
+						cout << "[ T ]";
+					}else if(board[i][k]->toString() == "Sergeant"){
+						cout << "[ S ]";
+					}else if(board[i][k]->toString() == "Minelayer"){
+						cout << "[ X ]";
+					}else if(board[i][k]->toString() == "Explorer"){
+						cout << "[ E ]";
+					}else if(board[i][k]->toString() == "Spy"){		
+						cout << "[ P ]";
+					}else if(board[i][k]->toString() == "Bomb"){	
+						cout << "[ B ]";
+					}else if(board[i][k]->toString() == "Flag"){
+						cout << "[ N ]";
+					}
+				}else if(board[i][k] ->getPlayer() == 1){
+					cout << "[ * ]";
+				}
+			}
+			cout << "\n";
+		}
 	}
 }
 
