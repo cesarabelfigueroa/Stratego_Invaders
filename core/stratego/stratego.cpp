@@ -30,6 +30,8 @@ void bombFormation(Token***, int);
 void offensiveFormation(Token***, int);
 void fillBoardRandomly(Token***, vector<Token*>&, int);
 void showBoard(Token***, int);
+int lettersToNumbers(char);
+int charToInt(char);
 void destroyBoard(Token***);
 
 int main(int argc, char*argv[]){
@@ -61,12 +63,20 @@ int main(int argc, char*argv[]){
 			showBoard(board,player);
 			cout << "Ingrese la jugada segun el tablero: ";
 			cin >> coordenatesInLetters;
+			coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
+			coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
+			coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
+			coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
 			player = 2;
 		}else if(player == 2){
 			cout << "***********JUGADOR 2*************" << endl;
 			showBoard(board,player);
 			cout << "Ingrese la jugada segun el tablero: ";
 			cin >> coordenatesInLetters;
+			coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
+			coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
+			coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
+			coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
 			player = 1;
 		}
 	}
@@ -251,12 +261,60 @@ void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
 		
 }
 
+int lettersToNumbers(char letra){
+        int num=0;
+        if(letra == 65){
+                num = 0;
+        }else if(letra == 66){
+                num = 1;
+        }else if(letra == 67){
+                num = 2;
+        }else if(letra == 68){
+                num = 3;
+        }else if(letra == 69){
+                num = 4;
+        }else if(letra == 70){
+                num = 5;
+        }else if(letra == 71){
+                num = 6;
+        }else if(letra == 72){
+                num = 7;
+        }else if(letra == 73){
+		num = 8;		
+	}else if(letra == 74){
+		num = 9;
+	}
+        return num;
+}
+
+int charToInt(char letra){
+        if (letra == 48){
+                return 9;
+        }else if(letra == 49){
+                return 8;
+        }else if(letra == 50){
+                return 7;
+        }else if(letra == 51){
+                return 6;
+        }else if(letra == 52){
+                return 5;
+        }else if(letra == 53){
+                return 4;
+        }else if(letra == 54){
+                return 3;
+        }else if(letra == 55){
+                return 2;
+        }else if(letra == 56){
+                return 1;
+        }else if(letra == 57){
+                return 0;
+        }
+}
 void showBoard(Token*** board, int player){
 	if(player == 1){
 		for(int i = 0; i < 10; i++){
-			cout << 10 -i;
-			if(10-i<10)
-				cout << " ";
+			cout << 9 -i;
+			cout << " ";
 			for(int k = 0; k < 10; k++){	
 				if(board[i][k] == NULL){
 					cout << "[   ]";
@@ -295,9 +353,8 @@ void showBoard(Token*** board, int player){
 		cout << "    A    B    C    D    E    F    G    H    I    J" << endl;
 	}else if(player == 2){
 		for(int i = 0; i < 10; i++){
-			cout << 10 -i;
-			if(10-i<10)
-				cout << " ";
+			cout << 9 -i;
+			cout << " ";
 			for(int k = 0; k < 10; k++){
 				if(board[i][k] == NULL){
 					cout << "[   ]";
