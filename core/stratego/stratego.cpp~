@@ -80,7 +80,7 @@ void applyFormations(Token*** board,int choice, int player){
 	}else if(choice == 3){
 	//formaciones cesar
 	}else if(choice == 4){
-		offensiveFormation(board,player);
+
 	}			
 }
 
