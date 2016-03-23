@@ -16,6 +16,6 @@ Lieutenant::~Lieutenant(){
 
 string Lieutenant::toString()const{
 	stringstream ss;
-	ss << "Lieutenant";
+	ss << "[ T ]";
 	return ss.str();
 }

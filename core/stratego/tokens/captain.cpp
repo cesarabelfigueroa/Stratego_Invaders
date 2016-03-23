@@ -16,6 +16,6 @@ Captain::~Captain(){
 
 string Captain::toString()const{
 	stringstream ss;
-	ss << "Captain";
+	ss << "[ A ]";
 	return ss.str();
 }

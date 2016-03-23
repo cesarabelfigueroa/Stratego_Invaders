@@ -16,7 +16,7 @@ Bomb::~Bomb(){
 
 string Bomb::toString()const{
 	stringstream ss;
-	ss << "Bomb";
+	ss << "[ B ]";
 	return ss.str();
 }
 

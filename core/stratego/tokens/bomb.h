@@ -1,6 +1,7 @@
 #pragma once
 #include "token.h"
 #include <string>
+#include <iostream>
 
 using std::string;
 

@@ -16,6 +16,6 @@ Spy::~Spy(){
 
 string Spy::toString()const{
 	stringstream ss;
-	ss << "Spy";
+	ss << "[ P ]";
 	return ss.str();
 }

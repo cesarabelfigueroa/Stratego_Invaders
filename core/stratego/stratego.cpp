@@ -17,6 +17,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <typeinfo>
+#include <cctype>
 
 using std::vector;
 using std::cout;
@@ -28,10 +29,10 @@ void initializeBoard(Token***);
 void applyFormations(Token***,int, int);
 void bombFormation(Token***, int);
 void offensiveFormation(Token***, int);
+void assaultFormation(Token*** board, int player);
 void fillBoardRandomly(Token***, vector<Token*>&, int);
 void showBoard(Token***, int);
 int lettersToNumbers(char);
-int charToInt(char);
 bool verifyCoordenates(int[]);
 bool explorerValidation(Token***, int[]);
 bool verifyActualPosition(Token***, int, int, int);
@@ -41,10 +42,11 @@ void destroyBoard(Token***);
 
 int main(int argc, char*argv[]){
 	int player = 1;
+	int before = 2;
 	int choice;
+	int x0 = 0, y0 = 0, x1 = 0, y1 = 0;
 	char coordenatesInLetters[5];
 	int coordenatesInNumbers[4];
-	int counter = 1;
 	int nextPosition = 3;
 	bool correctMovement = false;
 	bool continuePlaying = true;
@@ -53,7 +55,7 @@ int main(int argc, char*argv[]){
 	Token*** board = createBoard();
 	initializeBoard(board);
 	
-	while(counter < 3){
+	for (int counter = 1; counter < 3; ++counter){
 		cout << "BIENVENIDO A STRATEGO" << endl;
 		cout << "Antes de empezar, cada jugador debe elegir una formacion inicial! " << endl;
 		cout << "1. Formacion defensiva con bombas" << endl;
@@ -63,124 +65,68 @@ int main(int argc, char*argv[]){
 		cout << "Seleccione una opcion: ";
 		cin >> choice;
 		applyFormations(board,choice,counter);
-		counter++;	
 	}
-	
+		
 	while(continuePlaying){
-		if(player ==1){
-			cout << "***********JUGADOR 1*************" << endl;
-			showBoard(board,player);
-			
-			while(!correctMovement){//No sale mientras el movimiento de esa pieza no sea valido
-				while(nextPosition == 3){//no sale mientras la casilla a la que desea mover sea propia
-					while(!verifyCurrentPosition){//no sale mientras la casilla no sea de su ejercito
-						while(!correctCoordenates){//no sale mientras coordenadas no sean correctas
-							cout << "Ingrese la jugada segun el tablero: ";		
-							cin >> coordenatesInLetters;
-							coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
-							coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
-							coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
-							coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
-							correctCoordenates = verifyCoordenates(coordenatesInNumbers);
-							
-							if(!correctCoordenates){
-								cout << "Posicion no valida" << endl;
-							}
-						}			
-						verifyCurrentPosition = verifyActualPosition(board, coordenatesInNumbers[0], 
-coordenatesInNumbers[1],player);
-			
-						if(!verifyCurrentPosition){
-							cout << "En esta casilla no hay una pieza propia" << endl;
-							correctCoordenates = false;
+		cout << "***********JUGADOR " << player << " *************" << endl;
+		showBoard(board,player);
+		while(!correctMovement){
+			while(nextPosition == 3){
+				while(!verifyCurrentPosition){
+					while(!correctCoordenates){
+						cout << "Ingrese la jugada segun el tablero: ";		
+						cin >> coordenatesInLetters;
+						x0 = lettersToNumbers(coordenatesInLetters[1]);
+						y0 = lettersToNumbers(coordenatesInLetters[0]);
+						x1 = lettersToNumbers(coordenatesInLetters[3]);
+						y1 = lettersToNumbers(coordenatesInLetters[2]);
+						coordenatesInNumbers[0] = x0;
+						coordenatesInNumbers[1] = y0;
+						coordenatesInNumbers[2] = x1;
+						coordenatesInNumbers[3] = y1;
+						correctCoordenates = verifyCoordenates(coordenatesInNumbers);
+						if(!correctCoordenates){
+							cout << "Posición inválida." << endl;
 						}
-					}
-					nextPosition = verifyNextPosition(board,coordenatesInNumbers[2], coordenatesInNumbers[3],player);
-					if(nextPosition == 3){
-						cout << "Movimiento invalido" << endl;
-						verifyCurrentPosition = false;
-						correctCoordenates = false;
 					}	
-				}	
-								
-					
-				correctMovement = board[coordenatesInNumbers[0]][coordenatesInNumbers[1]]->movementValidations(coordenatesInNumbers);
-				if(!correctMovement){
-					cout << "Movimiento de pieza invalido" << endl;
+
+					verifyCurrentPosition = verifyActualPosition(board, x0, y0,player);
+					if(!verifyCurrentPosition){
+						cout << "En esta casilla no hay una pieza propia." << endl;
+						correctCoordenates = false;
+					}
+				}
+				nextPosition = verifyNextPosition(board,x1, y1, player);
+				if(nextPosition == 3){
+					cout << "Movimiento inválido." << endl;
 					verifyCurrentPosition = false;
 					correctCoordenates = false;
-					nextPosition = 3;
-				}
-			}
-			
-			if(nextPosition == 1){//nextPosition == 1 significa que la siguiente casilla este vacia
-				move(board, coordenatesInNumbers);
-			}else if(nextPosition == 2){//nextPosition == 2 significa que en la casilla siguiente hay un enemigo
-				//Metodos y validaciones para comer (Cesar)
-			}		
-			correctMovement = false;	
-			nextPosition = 3;
-			correctCoordenates = false;
-			verifyCurrentPosition = false;
-			player = 2;
-//***********************************************************************************************************************************
-		}else if(player == 2){
-			cout << "***********JUGADOR 2*************" << endl;
-			showBoard(board,player);
-			while(!correctMovement){
-				while(nextPosition == 3){
-					while(!verifyCurrentPosition){
-						while(!correctCoordenates){
-							cout << "Ingrese la jugada segun el tablero: ";		
-							cin >> coordenatesInLetters;
-							coordenatesInNumbers[0] = charToInt(coordenatesInLetters[1]);
-							coordenatesInNumbers[1] = lettersToNumbers(coordenatesInLetters[0]);
-							coordenatesInNumbers[2] = charToInt(coordenatesInLetters[3]);
-							coordenatesInNumbers[3] = lettersToNumbers(coordenatesInLetters[2]);
-							correctCoordenates = verifyCoordenates(coordenatesInNumbers);
-							
-							if(!correctCoordenates){
-								cout << "Posicion no valida" << endl;
-							}
-						}			
-						verifyCurrentPosition = verifyActualPosition(board, coordenatesInNumbers[0], 
-coordenatesInNumbers[1],player);
-			
-						if(!verifyCurrentPosition){
-							cout << "En esta casilla no hay una pieza propia" << endl;
-							correctCoordenates = false;
-						}
-					}
-					nextPosition = verifyNextPosition(board,coordenatesInNumbers[2], coordenatesInNumbers[3],player);
-					if(nextPosition == 3){
-						cout << "Movimiento invalido" << endl;
-						verifyCurrentPosition = false;
-						correctCoordenates = false;
-					}	
 				}	
-								
-					
-				correctMovement = board[coordenatesInNumbers[0]][coordenatesInNumbers[1]]->movementValidations(coordenatesInNumbers);
-				if(!correctMovement){
-					cout << "Movimiento de pieza invalido" << endl;
-					verifyCurrentPosition = false;
-					correctCoordenates = false;
-					nextPosition = 3;
-				}
-			}
-			
-			if(nextPosition == 1){
-				move(board, coordenatesInNumbers);
-			}else if(nextPosition == 2){
-				//Metodos y validaciones para comer (Cesar)
 			}	
-			correctMovement = false;		
-			nextPosition = 3;
-			correctCoordenates = false;
-			verifyCurrentPosition = false;
-			player = 1;
+
+			correctMovement = board[coordenatesInNumbers[0]][coordenatesInNumbers[1]]->movementValidations(coordenatesInNumbers);
+			if(!correctMovement){
+				cout << "Movimiento de pieza invalido" << endl;
+				verifyCurrentPosition = false;
+				correctCoordenates = false;
+				nextPosition = 3;
+			}
 		}
+		
+		if(nextPosition == 1){
+			move(board, coordenatesInNumbers);
+		}else if(nextPosition == 2){
+
+		}		
+
+		correctMovement = false;	
+		nextPosition = 3;
+		correctCoordenates = false;
+		verifyCurrentPosition = false;
+		before = player;
+		player = before == 1 ? 2: 1;	
 	}
+
 	destroyBoard(board);
 	return 0;
 }
@@ -302,13 +248,33 @@ void bombFormation(Token*** board, int player){
 		tokens.push_back(new Explorer(player));
 		tokens.push_back(new Explorer(player));
 	}
+
 	tokens.push_back(new Minelayer(player));
 	tokens.push_back(new Spy(player));
 
 	fillBoardRandomly(board,tokens,player);
 }
 
+
+void assaultFormation(Token*** board, int player){
+	vector<Token*> tokens;
+	board[8][5] = new Flag(player);
+	board[7][4] = new Bomb(player);
+	board[7][5] = new Bomb(player);
+	board[7][6] = new Bomb(player);
+	board[8][4] = new Bomb(player);
+	board[8][6] = new Bomb(player);
+	board[9][4] = new Bomb(player);
+	board[9][3] = new Coronel(player);
+	board[9][6] = new Coronel(player);
+}
+
 void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
+	srand(time(NULL));
+	vector<int> numbers;
+	int position;
+	bool verifyNumber = false;
+
 	if(player == 1){
 		srand(time(NULL));
 		vector<int> numbers;
@@ -319,8 +285,9 @@ void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
 				verifyNumber = false;
 				position = 0 + rand()%(tokens.size() - 0);
 				for(int j = 0; j < numbers.size(); j++){
-					if(numbers[j] == position)
+					if(numbers[j] == position){
 						verifyNumber = true;
+					}
 				}
 				
 				if(verifyNumber){
@@ -341,10 +308,11 @@ void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
 		for(int i = 3; i >= 0; i--){
 			for(int k = 0; k < 10; k++){
 				verifyNumber = false;
-				position = 0 + rand()%(tokens.size() - 0);
+				position = rand()%(tokens.size());
 				for(int j = 0; j < numbers.size(); j++){
-					if(numbers[j] == position)
+					if(numbers[j] == position){
 						verifyNumber = true;
+					}
 					
 				}
 				
@@ -359,57 +327,52 @@ void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
 			}
 		}
 	}
-		
 }
 
-int lettersToNumbers(char letra){
-        int num=0;
-        if(letra == 65){
-                num = 0;
-        }else if(letra == 66){
-                num = 1;
-        }else if(letra == 67){
-                num = 2;
-        }else if(letra == 68){
-                num = 3;
-        }else if(letra == 69){
-                num = 4;
-        }else if(letra == 70){
-                num = 5;
-        }else if(letra == 71){
-                num = 6;
-        }else if(letra == 72){
-                num = 7;
-        }else if(letra == 73){
-		num = 8;		
-	}else if(letra == 74){
-		num = 9;
+int lettersToNumbers(char letter){
+	letter = toupper(letter);
+	if (letter == 48){
+		return 9;
+    }else if(letter == 49){
+		return 8;
+    }else if(letter == 50){
+		return 7;
+    }else if(letter == 51){
+		return 6;
+    }else if(letter == 52){
+		return 5;
+    }else if(letter == 53){
+		return 4;
+    }else if(letter == 54){
+		return 3;
+    }else if(letter == 55){
+		return 2;
+    }else if(letter == 56){
+		return 1;
+    }else if(letter == 57){
+		return 0;
+    }else if(letter == 65){
+		return 0;
+    }else if(letter == 66){
+    	return 1;
+    }else if(letter == 67){
+    	return 2;
+    }else if(letter == 68){
+    	return 3;
+    }else if(letter == 69){
+    	return 4;
+    }else if(letter == 70){
+    	return 5;
+    }else if(letter == 71){
+    	return 6;
+    }else if(letter == 72){
+    	return 7;
+    }else if(letter == 73){
+		return 8;		
+	}else if(letter == 74){
+		return 9;
 	}
-        return num;
-}
-
-int charToInt(char letra){
-        if (letra == 48){
-                return 9;
-        }else if(letra == 49){
-                return 8;
-        }else if(letra == 50){
-                return 7;
-        }else if(letra == 51){
-                return 6;
-        }else if(letra == 52){
-                return 5;
-        }else if(letra == 53){
-                return 4;
-        }else if(letra == 54){
-                return 3;
-        }else if(letra == 55){
-                return 2;
-        }else if(letra == 56){
-                return 1;
-        }else if(letra == 57){
-                return 0;
-        }
+	
 }
 
 bool verifyCoordenates(int coordenates[]){
@@ -445,7 +408,6 @@ int verifyNextPosition(Token*** board, int row, int column, int player){
 	}
 	
 }
-
 
 bool explorerValidation(Token*** board, int positions[]){
 	bool answer = true;
@@ -487,87 +449,24 @@ void move(Token*** board, int coordenates[]){
 }	
 
 void showBoard(Token*** board, int player){
-	if(player == 1){
-		for(int i = 0; i < 10; i++){
-			cout << 9 -i;
-			cout << " ";
-			for(int k = 0; k < 10; k++){	
-				if(board[i][k] == NULL){
-					cout << "[   ]";
-				}else if(board[i][k]->getPlayer()==1){
-					 if(board[i][k]->toString() == "Marshal"){
-						cout << "[ M ]";
-					}else if(board[i][k]->toString() == "General"){
-						cout << "[ G ]";
-					}else if(board[i][k]->toString() == "Coronel"){
-						cout << "[ C ]";
-					}else if(board[i][k]->toString() == "Commander"){
-						cout << "[ O ]";
-					}else if(board[i][k]->toString() == "Captain"){	
-						cout << "[ A ]";
-					}else if(board[i][k]->toString() == "Lieutenant"){
-						cout << "[ T ]";
-					}else if(board[i][k]->toString() == "Sergeant"){
-						cout << "[ S ]";
-					}else if(board[i][k]->toString() == "Minelayer"){
-						cout << "[ X ]";
-					}else if(board[i][k]->toString() == "Explorer"){
-						cout << "[ E ]";
-					}else if(board[i][k]->toString() == "Spy"){		
-						cout << "[ P ]";
-					}else if(board[i][k]->toString() == "Bomb"){	
-						cout << "[ B ]";
-					}else if(board[i][k]->toString() == "Flag"){
-						cout << "[ N ]";
-					}
-				}else if(board[i][k] ->getPlayer() == 2){
-					cout << "[ * ]";
-				}
+	int actual = player;
+	int before = player == 1 ? 2: 1;
+	for(int i = 0; i < 10; i++){
+		cout << 9 - i;
+		cout << " ";
+		for(int k = 0; k < 10; k++){	
+			if(board[i][k] == NULL){
+				cout << "[   ]";
+			}else if(board[i][k] -> getPlayer() == actual){
+				cout << *board[i][k];
+				 
+			}else if(board[i][k] -> getPlayer() == before){
+				cout << "[ * ]";
 			}
-			cout << "\n";
 		}
-		cout << "    A    B    C    D    E    F    G    H    I    J" << endl;
-	}else if(player == 2){
-		for(int i = 0; i < 10; i++){
-			cout << 9 -i;
-			cout << " ";
-			for(int k = 0; k < 10; k++){
-				if(board[i][k] == NULL){
-					cout << "[   ]";
-				}else if(board[i][k]->getPlayer() ==2){
-					 if(board[i][k]->toString() == "Marshal"){
-						cout << "[ M ]";
-					}else if(board[i][k]->toString() == "General"){
-						cout << "[ G ]";
-					}else if(board[i][k]->toString() == "Coronel"){
-						cout << "[ C ]";
-					}else if(board[i][k]->toString() == "Commander"){
-						cout << "[ O ]";
-					}else if(board[i][k]->toString() == "Captain"){	
-						cout << "[ A ]";
-					}else if(board[i][k]->toString() == "Lieutenant"){
-						cout << "[ T ]";
-					}else if(board[i][k]->toString() == "Sergeant"){
-						cout << "[ S ]";
-					}else if(board[i][k]->toString() == "Minelayer"){
-						cout << "[ X ]";
-					}else if(board[i][k]->toString() == "Explorer"){
-						cout << "[ E ]";
-					}else if(board[i][k]->toString() == "Spy"){		
-						cout << "[ P ]";
-					}else if(board[i][k]->toString() == "Bomb"){	
-						cout << "[ B ]";
-					}else if(board[i][k]->toString() == "Flag"){
-						cout << "[ N ]";
-					}
-				}else if(board[i][k] ->getPlayer() == 1){
-					cout << "[ * ]";
-				}
-			}
-			cout << "\n";
-		}
-		cout << "    A    B    C    D    E    F    G    H    I    J" << endl;
+		cout << endl;
 	}
+	cout << "    A    B    C    D    E    F    G    H    I    J" << endl;
 }
 
 void destroyBoard(Token*** board){

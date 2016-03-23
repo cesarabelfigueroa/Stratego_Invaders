@@ -16,7 +16,7 @@ Flag::~Flag(){
 
 string Flag::toString()const{
 	stringstream ss;
-	ss << "Flag";
+	ss << "[ F ]";
 	return ss.str();
 }
 

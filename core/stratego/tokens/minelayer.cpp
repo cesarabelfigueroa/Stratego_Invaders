@@ -16,6 +16,6 @@ Minelayer::~Minelayer(){
 
 string Minelayer::toString()const{
 	stringstream ss;
-	ss << "Minelayer";
+	ss << "[ X ]";
 	return ss.str();
 }

@@ -16,6 +16,6 @@ General::~General(){
 
 string General::toString()const{
 	stringstream ss;
-	ss << "General";
+	ss << "[ G ]";
 	return ss.str();
 }

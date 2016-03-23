@@ -16,6 +16,6 @@ Marshal::~Marshal(){
 
 string Marshal::toString()const{
 	stringstream ss;
-	ss << "Marshal";
+	ss << "[ M ]";
 	return ss.str();
 }

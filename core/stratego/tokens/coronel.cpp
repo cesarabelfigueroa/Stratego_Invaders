@@ -16,6 +16,6 @@ Coronel::~Coronel(){
 
 string Coronel::toString()const{
 	stringstream ss;
-	ss << "Coronel";
+	ss << "[ C ]";
 	return ss.str();
 }

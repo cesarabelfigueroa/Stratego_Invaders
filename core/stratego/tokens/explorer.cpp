@@ -16,7 +16,7 @@ Explorer::~Explorer(){
 
 string Explorer::toString()const{
 	stringstream ss;
-	ss << "Explorer";
+	ss << "[ E ]";
 	return ss.str();
 }
 
