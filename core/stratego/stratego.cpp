@@ -34,7 +34,6 @@ void fillBoardRandomly(Token***, vector<Token*>&, int);
 void showBoard(Token***, int);
 int lettersToNumbers(char);
 bool verifyCoordenates(int[]);
-bool explorerValidation(Token***, int[]);
 bool verifyActualPosition(Token***, int, int, int);
 int verifyNextPosition(Token***, int, int, int); //Retorna 1 si esta vacia, 2 si hay una pieza contaria; 3 si hay una pieza propia.
 void move(Token***, int[]);
@@ -409,39 +408,7 @@ int verifyNextPosition(Token*** board, int row, int column, int player){
 	
 }
 
-bool explorerValidation(Token*** board, int positions[]){
-	bool answer = true;
-	if(positions[0] == positions[2]){
-		if(positions[1] < positions[3]){
-			for(int i = positions[1]+1; i < positions[3]; i++){
-				if(board[positions[0]][i] != NULL){
-					answer = false;
-				}
-			}
-		}else if(positions[3] < positions[1]){
-			for(int i = positions[3] + 1; i < positions[1]; i++){
-				if(board[positions[0]][i] != false){
-					answer = false;
-				}
-			}
-		}
-	}else if(positions[1] == positions[3]){
-		if(positions[0] < positions[2]){
-			for(int i = positions[0]+1; i < positions[2]; i++){
-				if(board[i][positions[1]] != NULL){
-					answer = false;
-				}
-			}
-		}else if(positions[2] < positions[0]){
-			for(int i = positions[2] + 1; i < positions[0]; i++){
-				if(board[i][positions[1]] != NULL){
-					answer = false;
-				}
-			}
-		}	
-	}	
-	return answer;
-}
+
 
 void move(Token*** board, int coordenates[]){
 	board[coordenates[2]][coordenates[3]] = board[coordenates[0]][coordenates[1]];

@@ -104,7 +104,7 @@ int main(int argc, char*argv[]){
 				}	
 			}	
 
-			correctMovement = board[coordenatesInNumbers[0]][coordenatesInNumbers[1]]->movementValidations(coordenatesInNumbers);
+			correctMovement = board[coordenatesInNumbers[0]][coordenatesInNumbers[1]]->movementValidations(board,coordenatesInNumbers);
 			if(!correctMovement){
 				cout << "Movimiento de pieza invalido" << endl;
 				verifyCurrentPosition = false;
