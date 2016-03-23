@@ -16,5 +16,5 @@ class Token{
 		virtual string toString()const;
 		virtual int getRange()const;
 		virtual int getPlayer()const;
-		virtual bool movementValidations(Token***,int[])const;		
+		virtual bool movementValidations(int[])const;		
 };

@@ -20,6 +20,6 @@ string Flag::toString()const{
 	return ss.str();
 }
 
-bool Flag::movementValidations(Token*** board, int positions[])const{
+bool Flag::movementValidations(int positions[])const{
 	return false;
 }
