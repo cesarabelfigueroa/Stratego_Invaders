@@ -4,12 +4,10 @@
 
 using std::string;
 
-class Bomb: public Token{
+class Flag:public Token{
 	public:
-		Bomb(int,int = 0);
-		~Bomb();
+		Flag(int, int = 0);
+		~Flag();
 		virtual string toString()const;
-		virtual bool movementValidations(int[])const;	
 
 };
-

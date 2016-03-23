@@ -9,6 +9,6 @@ class Explorer:public Token{
 		Explorer(int,int = 2);
 		~Explorer();
 		virtual string toString()const;
-		virtual bool movementValidations(int[])const;
-		
+		virtual bool movementValidations(Token***,int[])const;
+		bool specialValidation(Token***, int[])const;
 };

@@ -25,4 +25,21 @@ int Token::getRange()const{
 
 int Token::getPlayer()const{
 	return player;
+}
+
+bool Token::movementValidations(int positions[])const{
+	bool answer = false;
+
+		if(positions[0] == positions[2] && positions[3] == positions[1] +1){
+			answer = true;
+		}else if(positions[0] == positions[2] && positions[3] == positions[1] -1){
+			answer = true;	
+		}else if(positions[1] == positions[3] && positions[2] == positions[0] +1){
+			answer = true;
+		}else if(positions[1] == positions[3] && positions[2] == positions[0] -1){
+			answer = true;
+		}			
+	
+	
+	return answer;
 }	

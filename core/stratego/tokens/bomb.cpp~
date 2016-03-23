@@ -19,7 +19,3 @@ string Bomb::toString()const{
 	ss << "Bomb";
 	return ss.str();
 }
-
-bool Bomb::movementValidations(int positions[])const{
-	return false;
-}

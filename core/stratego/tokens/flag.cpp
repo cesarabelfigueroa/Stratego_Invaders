@@ -19,3 +19,7 @@ string Flag::toString()const{
 	ss << "Flag";
 	return ss.str();
 }
+
+bool Flag::movementValidations(int positions[])const{
+	return false;
+}
