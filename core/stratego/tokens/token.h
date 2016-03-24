@@ -14,6 +14,7 @@ class Token{
 		~Token();
 		friend ostream& operator<<(ostream&, const Token& c);
 		virtual string toString()const;
+		virtual string getType()const;
 		virtual int getRange()const;
 		virtual int getPlayer()const;
 		virtual bool movementValidations(Token***,int[])const;		

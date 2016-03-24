@@ -19,3 +19,11 @@ string General::toString()const{
 	ss << "[ G ]";
 	return ss.str();
 }
+
+string General::getType()const{
+	stringstream ss;
+	ss << "G";
+	return ss.str();
+}
+
+

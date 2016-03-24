@@ -9,5 +9,6 @@ class Coronel:public Token{
 		Coronel(int, int = 8);
 		~Coronel();
 		virtual string toString()const;
+		virtual string getType()const;
 
 };

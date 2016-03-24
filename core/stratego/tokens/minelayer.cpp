@@ -19,3 +19,9 @@ string Minelayer::toString()const{
 	ss << "[ X ]";
 	return ss.str();
 }
+
+string Minelayer::getType()const{
+	stringstream ss;
+	ss << "X";
+	return ss.str();
+}

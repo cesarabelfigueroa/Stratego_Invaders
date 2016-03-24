@@ -19,3 +19,9 @@ string Marshal::toString()const{
 	ss << "[ M ]";
 	return ss.str();
 }
+
+string Marshal::getType()const{
+	stringstream ss;
+	ss << "M";
+	return ss.str();
+}

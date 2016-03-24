@@ -9,5 +9,6 @@ class Lieutenant : public Token {
 		Lieutenant(int,int = 5);
 		~Lieutenant();
 		virtual string toString()const;
+		virtual string getType()const;
 
 };

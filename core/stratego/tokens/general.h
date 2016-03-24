@@ -9,5 +9,6 @@ class General : public Token{
 		General(int, int = 9);
 		~General();
 		virtual string toString()const;
+		virtual string getType()const;
 
 };

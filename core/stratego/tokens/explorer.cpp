@@ -20,6 +20,12 @@ string Explorer::toString()const{
 	return ss.str();
 }
 
+string Explorer::getType()const{
+	stringstream ss;
+	ss << "E";
+	return ss.str();
+}
+
 bool Explorer::movementValidations(Token*** board,int positions[])const{
 	bool answer = false;
 	//if(board[positions[2]][positions[3]]-> toString() != "[ K ]"){

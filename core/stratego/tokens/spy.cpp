@@ -19,3 +19,9 @@ string Spy::toString()const{
 	ss << "[ P ]";
 	return ss.str();
 }
+
+string Spy::getType()const{
+	stringstream ss;
+	ss << "P";
+	return ss.str();
+}

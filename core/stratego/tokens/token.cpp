@@ -49,3 +49,9 @@ ostream& operator<<(ostream& output, const Token& c){
 	output << c.toString();
 	return output;
 }
+
+string Token::getType()const{
+	stringstream ss;
+	ss << "*";
+	return ss.str();
+}	

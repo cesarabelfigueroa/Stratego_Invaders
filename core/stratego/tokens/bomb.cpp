@@ -23,3 +23,9 @@ string Bomb::toString()const{
 bool Bomb::movementValidations(Token*** board,int positions[])const{
 	return false;
 }
+
+string Bomb::getType()const{
+	stringstream ss;
+	ss << "B";
+	return ss.str();
+}

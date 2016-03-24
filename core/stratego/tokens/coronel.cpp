@@ -19,3 +19,9 @@ string Coronel::toString()const{
 	ss << "[ C ]";
 	return ss.str();
 }
+
+string Coronel::getType()const{
+	stringstream ss;
+	ss << "C";
+	return ss.str();
+}

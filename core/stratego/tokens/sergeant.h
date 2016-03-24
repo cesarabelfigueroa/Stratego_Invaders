@@ -9,5 +9,6 @@ class Sergeant:public Token{
 		Sergeant(int, int = 4);
 		~Sergeant();
 		virtual string toString()const;
+		virtual string getType()const;
 
 };

@@ -19,3 +19,11 @@ string Captain::toString()const{
 	ss << "[ A ]";
 	return ss.str();
 }
+
+
+string Captain::getType()const{
+	stringstream ss;
+	ss << "A";
+	return ss.str();
+}
+

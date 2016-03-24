@@ -9,6 +9,8 @@ class Flag:public Token{
 		Flag(int, int = 0);
 		~Flag();
 		virtual string toString()const;
+		virtual string getType()const;
 		virtual bool movementValidations(Token***,int[])const;
 
 };
+
