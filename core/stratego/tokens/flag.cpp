@@ -20,6 +20,12 @@ string Flag::toString()const{
 	return ss.str();
 }
 
+string Flag::getType()const{
+	stringstream ss;
+	ss << "F";
+	return ss.str();
+}
+
 bool Flag::movementValidations(Token*** board, int positions[])const{
 	return false;
 }

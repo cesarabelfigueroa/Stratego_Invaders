@@ -29,9 +29,10 @@ void initializeBoard(Token***);
 void applyFormations(Token***,int, int);
 void bombFormation(Token***, int);
 void offensiveFormation(Token***, int);
-void assaultFormation(Token*** board, int player);
 void fillBoardRandomly(Token***, vector<Token*>&, int);
 void showBoard(Token***, int);
+bool isKeepPlaying(Token*** , int);
+void assaultFormation(Token***, int);
 int lettersToNumbers(char);
 bool verifyCoordenates(int[]);
 bool verifyActualPosition(Token***, int, int, int);
@@ -57,13 +58,16 @@ int main(int argc, char*argv[]){
 	for (int counter = 1; counter < 3; ++counter){
 		cout << "BIENVENIDO A STRATEGO" << endl;
 		cout << "Antes de empezar, cada jugador debe elegir una formacion inicial! " << endl;
-		cout << "1. Formacion defensiva con bombas" << endl;
-		cout << "2. Formacion defensiva con bombas y escolta de alto rango " << endl;
-		cout << "3. Formacion semi-ofensiva con exploradores en las lineas frontales" << endl;
-		cout << "4. Formacion ofensiva con guerreros de alto rango al frente" << endl;
+		cout << "1. Formacion defensiva con bombas." << endl;
+		cout << "2. Formacion defensiva con bombas y escolta de alto rango." << endl;
+		cout << "3. Formacion ofensiva con guerreros de alto rango al frente." << endl;
 		cout << "Seleccione una opcion: ";
 		cin >> choice;
-		applyFormations(board,choice,counter);
+		if(choice > 0 && choice <= 3){
+			applyFormations(board,choice,counter);
+		}else{
+			cout << "Opción inválida." << endl;
+		}
 	}
 		
 	while(continuePlaying){
@@ -103,7 +107,7 @@ int main(int argc, char*argv[]){
 				}	
 			}	
 
-			correctMovement = board[coordenatesInNumbers[0]][coordenatesInNumbers[1]]->movementValidations(board,coordenatesInNumbers);
+			correctMovement = board[coordenatesInNumbers[0]][coordenatesInNumbers[1]]->movementValidations(board, coordenatesInNumbers);
 			if(!correctMovement){
 				cout << "Movimiento de pieza invalido" << endl;
 				verifyCurrentPosition = false;
@@ -112,18 +116,14 @@ int main(int argc, char*argv[]){
 			}
 		}
 		
-		if(nextPosition == 1){
-			move(board, coordenatesInNumbers);
-		}else if(nextPosition == 2){
-
-		}		
-
+		move(board, coordenatesInNumbers);
 		correctMovement = false;	
 		nextPosition = 3;
 		correctCoordenates = false;
 		verifyCurrentPosition = false;
 		before = player;
-		player = before == 1 ? 2: 1;	
+		player = before == 1 ? 2: 1;
+		continuePlaying = isKeepPlaying(board, player);	
 	}
 
 	destroyBoard(board);
@@ -151,10 +151,8 @@ void applyFormations(Token*** board,int choice, int player){
 	if(choice == 1){
 		bombFormation(board,player);							
 	}else if(choice == 2){
-	//formaciones cesar
+		assaultFormation(board, player);
 	}else if(choice == 3){
-	//formaciones cesar
-	}else if(choice == 4){
 		offensiveFormation(board,player);
 	}			
 }
@@ -207,6 +205,60 @@ void offensiveFormation(Token*** board, int player){
 	fillBoardRandomly(board,tokens, player);
 }
 
+
+void assaultFormation(Token*** board, int player){
+	vector<Token*> tokens;
+	if(player == 1){
+		board[8][5] = new Flag(player);
+		board[7][4] = new Bomb(player);
+		board[7][5] = new Bomb(player);
+		board[7][6] = new Bomb(player);
+		board[8][4] = new Bomb(player);
+		board[8][6] = new Bomb(player);
+		board[9][4] = new Bomb(player);
+		board[8][3] = new Coronel(player);
+		board[8][0] = new Coronel(player);
+		board[8][2] = new Marshal(player);
+		board[8][1] = new General(player);
+
+	}else if(player == 2){
+		board[1][5] = new Flag(player);
+		board[2][4] = new Bomb(player);
+		board[2][5] = new Bomb(player);
+		board[2][6] = new Bomb(player);
+		board[1][4] = new Bomb(player);
+		board[1][6] = new Bomb(player);
+		board[0][4] = new Bomb(player);
+		board[3][1] = new Coronel(player);
+		board[3][0] = new Coronel(player);
+		board[3][2] = new Marshal(player);
+		board[3][3] = new General(player);
+	}
+	
+	for(int i = 0; i < 4; i++){
+		tokens.push_back(new Captain(player));
+		tokens.push_back(new Lieutenant(player));
+		tokens.push_back(new Sergeant(player));
+		tokens.push_back(new Minelayer(player));
+		tokens.push_back(new Explorer(player));
+		tokens.push_back(new Explorer(player));
+		if(i < 1){
+			tokens.push_back(new Marshal(player));
+			tokens.push_back(new General(player));
+			tokens.push_back(new Minelayer(player));
+			tokens.push_back(new Spy(player));
+		}
+
+		if(i < 3){
+			tokens.push_back(new Commander(player));
+		}
+	}
+	fillBoardRandomly(board, tokens, player);
+}
+
+
+
+
 void bombFormation(Token*** board, int player){
 	vector<Token*> tokens;
 	if(player == 1){
@@ -250,30 +302,15 @@ void bombFormation(Token*** board, int player){
 
 	tokens.push_back(new Minelayer(player));
 	tokens.push_back(new Spy(player));
-
 	fillBoardRandomly(board,tokens,player);
 }
 
-
-void assaultFormation(Token*** board, int player){
-	vector<Token*> tokens;
-	board[8][5] = new Flag(player);
-	board[7][4] = new Bomb(player);
-	board[7][5] = new Bomb(player);
-	board[7][6] = new Bomb(player);
-	board[8][4] = new Bomb(player);
-	board[8][6] = new Bomb(player);
-	board[9][4] = new Bomb(player);
-	board[9][3] = new Coronel(player);
-	board[9][6] = new Coronel(player);
-}
 
 void fillBoardRandomly(Token*** board, vector<Token*>& tokens, int player){
 	srand(time(NULL));
 	vector<int> numbers;
 	int position;
 	bool verifyNumber = false;
-
 	if(player == 1){
 		srand(time(NULL));
 		vector<int> numbers;
@@ -405,14 +442,47 @@ int verifyNextPosition(Token*** board, int row, int column, int player){
 	}else if(board[row][column]->getPlayer() == player){
 		return 3;
 	}
-	
+}
+
+bool isKeepPlaying(Token*** board, int player){
+	for (int i = 0; i < 10; ++i){
+		for (int j = 0; j < 10; ++j){
+			if(board[i][j]){
+				if(board[i][j] -> getType() != "F" && board[i][j]-> getType() != "B" && player != board[i][j] -> getPlayer()){
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+
 }
 
 
 
 void move(Token*** board, int coordenates[]){
-	board[coordenates[2]][coordenates[3]] = board[coordenates[0]][coordenates[1]];
-	board[coordenates[0]][coordenates[1]] = NULL;
+	if(!board[coordenates[2]][coordenates[3]] || board[coordenates[2]][coordenates[3]] -> getType() == "*"){
+		board[coordenates[2]][coordenates[3]] = board[coordenates[0]][coordenates[1]];
+		board[coordenates[0]][coordenates[1]] = NULL;
+	}else if(board[coordenates[2]][coordenates[3]] -> getType() == "B"){
+		if(board[coordenates[0]][coordenates[1]] -> getType() == "X"){
+			board[coordenates[2]][coordenates[3]] = board[coordenates[0]][coordenates[1]];
+			board[coordenates[0]][coordenates[1]] = NULL;
+		}else{
+			board[coordenates[0]][coordenates[1]] = NULL;
+		}
+	}else if(board[coordenates[2]][coordenates[3]] -> getType() == "M"  && board[coordenates[0]][coordenates[1]] -> getType() == "P"){
+		board[coordenates[2]][coordenates[3]] = board[coordenates[0]][coordenates[1]];
+		board[coordenates[0]][coordenates[1]] = NULL;
+	}else if(board[coordenates[2]][coordenates[3]] -> getRange() > board[coordenates[0]][coordenates[1]] -> getRange()){
+		board[coordenates[0]][coordenates[1]] = NULL;
+	}else if(board[coordenates[2]][coordenates[3]] -> getRange() < board[coordenates[0]][coordenates[1]] -> getRange()){
+		board[coordenates[2]][coordenates[3]] = board[coordenates[0]][coordenates[1]];
+		board[coordenates[0]][coordenates[1]] = NULL;
+	}else if(board[coordenates[2]][coordenates[3]] -> getRange() == board[coordenates[0]][coordenates[1]] -> getRange()){
+		board[coordenates[2]][coordenates[3]] = NULL;
+		board[coordenates[0]][coordenates[1]] = NULL;
+	}
 }	
 
 void showBoard(Token*** board, int player){
@@ -438,8 +508,17 @@ void showBoard(Token*** board, int player){
 
 void destroyBoard(Token*** board){
 	for(int i = 0; i < 10; i++){
+		for (int j = 0; j < 10; ++j){
+			if(board[i][j]){
+				delete board[i][j];
+			}
+		}
+	}
+
+	for(int i = 0; i < 10; i++){
 		delete[] board[i];
 	}
+
 	
 	delete[] board;
 }

@@ -11,6 +11,7 @@ class Bomb: public Token{
 		~Bomb();
 		virtual string toString()const;
 		virtual bool movementValidations(Token*** ,int[])const;	
+		virtual string getType()const;
 
 };
 

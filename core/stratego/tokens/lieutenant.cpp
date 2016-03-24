@@ -19,3 +19,9 @@ string Lieutenant::toString()const{
 	ss << "[ T ]";
 	return ss.str();
 }
+
+string Lieutenant::getType()const{
+	stringstream ss;
+	ss << "T";
+	return ss.str();
+}

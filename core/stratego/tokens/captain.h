@@ -9,5 +9,6 @@ class Captain : public Token{
 		Captain(int, int = 6);
 		~Captain();
 		virtual string toString()const;
+		virtual string getType()const;
 
 };

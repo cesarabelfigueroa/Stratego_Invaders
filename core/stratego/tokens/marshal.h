@@ -9,5 +9,6 @@ class Marshal:public Token{
 		Marshal(int,int = 10);
 		~Marshal();
 		virtual string toString()const;
+		virtual string getType()const;
 
 };

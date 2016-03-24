@@ -9,5 +9,6 @@ class Spy:public Token{
 		Spy(int, int = 1);
 		~Spy();
 		virtual string toString()const;
+		virtual string getType()const;
 
 };

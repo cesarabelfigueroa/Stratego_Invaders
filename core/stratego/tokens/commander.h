@@ -9,5 +9,6 @@ class Commander:public Token{
 		Commander(int,int = 7);
 		~Commander();
 		virtual string toString()const;
+		virtual string getType()const;
 
 };

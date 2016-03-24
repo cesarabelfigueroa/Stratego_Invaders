@@ -9,5 +9,6 @@ class Minelayer:public Token{
 		Minelayer(int,int = 3);
 		~Minelayer();
 		virtual string toString()const;
+		virtual string getType()const;
 
 };

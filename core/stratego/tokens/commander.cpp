@@ -19,3 +19,9 @@ string Commander::toString()const{
 	ss << "[ O ]";
 	return ss.str();
 }
+
+string Commander::getType()const{
+	stringstream ss;
+	ss << "O";
+	return ss.str();
+}

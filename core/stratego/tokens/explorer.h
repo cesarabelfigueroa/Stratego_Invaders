@@ -11,4 +11,5 @@ class Explorer:public Token{
 		virtual string toString()const;
 		virtual bool movementValidations(Token*** ,int[])const;
 		bool explorerValidation(Token***, int[])const;		
+		virtual string getType()const;
 };

@@ -19,3 +19,9 @@ string Sergeant::toString()const{
 	ss << "[ S ]";
 	return ss.str();
 }
+
+string Sergeant::getType()const{
+	stringstream ss;
+	ss << "S";
+	return ss.str();
+}
