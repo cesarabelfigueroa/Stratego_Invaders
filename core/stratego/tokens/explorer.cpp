@@ -22,11 +22,13 @@ string Explorer::toString()const{
 
 bool Explorer::movementValidations(Token*** board,int positions[])const{
 	bool answer = false;
-	if(explorerValidation(board,positions)){
-		if(positions[0] == positions[2] || positions[1] == positions[3]){
-			answer = true;
+	//if(board[positions[2]][positions[3]]-> toString() != "[ K ]"){
+		if(explorerValidation(board,positions)){
+			if(positions[0] == positions[2] || positions[1] == positions[3]){
+				answer = true;
+			}
 		}
-	}
+	//}
 	
 	return answer;
 }

@@ -31,15 +31,17 @@ int Token::getPlayer()const{
 
 bool Token::movementValidations(Token*** board,int positions[])const{
 	bool answer = false;
-	if(positions[0] == positions[2] && positions[3] == positions[1] +1){
-		answer = true;
-	}else if(positions[0] == positions[2] && positions[3] == positions[1] -1){
-		answer = true;	
-	}else if(positions[1] == positions[3] && positions[2] == positions[0] +1){
-		answer = true;
-	}else if(positions[1] == positions[3] && positions[2] == positions[0] -1){
-		answer = true;
-	}			
+	//if(board[positions[2]][positions[3]] -> toString() != "[ K ]"){
+		if(positions[0] == positions[2] && positions[3] == positions[1] +1){
+			answer = true;
+		}else if(positions[0] == positions[2] && positions[3] == positions[1] -1){
+			answer = true;	
+		}else if(positions[1] == positions[3] && positions[2] == positions[0] +1){
+			answer = true;
+		}else if(positions[1] == positions[3] && positions[2] == positions[0] -1){
+			answer = true;
+		}
+	//}			
 	return answer;
 }	
 
