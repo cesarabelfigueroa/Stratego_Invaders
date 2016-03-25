@@ -6,70 +6,68 @@
 using std::string;
 using std::stringstream;
 
-Explorer::Explorer(int player, int range):Token(player,range){
-	
-}
-
-Explorer::~Explorer(){
+Explorer::Explorer(int player, int range): Token(player, range) {
 
 }
 
-string Explorer::toString()const{
+Explorer::~Explorer() {
+
+}
+
+string Explorer::toString()const {
 	stringstream ss;
 	ss << "[ E ]";
 	return ss.str();
 }
 
-string Explorer::getType()const{
+string Explorer::getType()const {
 	stringstream ss;
 	ss << "E";
 	return ss.str();
 }
 
-bool Explorer::movementValidations(Token*** board,int positions[])const{
+bool Explorer::movementValidations(Token*** board, int positions[])const {
 	bool answer = false;
-	//if(board[positions[2]][positions[3]]-> toString() != "[ K ]"){
-		if(explorerValidation(board,positions)){
-			if(positions[0] == positions[2] || positions[1] == positions[3]){
-				answer = true;
-			}
+	if (explorerValidation(board, positions)) {
+		if (positions[0] == positions[2] || positions[1] == positions[3]) {
+			answer = true;
 		}
-	//}
-	
+	}
+
 	return answer;
 }
 
-bool Explorer::explorerValidation(Token*** board, int positions[])const{
+bool Explorer::explorerValidation(Token*** board, int positions[])const {
 	bool answer = true;
-	if(positions[0] == positions[2]){
-		if(positions[1] < positions[3]){
-			for(int i = positions[1]+1; i < positions[3]; i++){
-				if(board[positions[0]][i] != NULL){
+	if (positions[0] == positions[2]) {
+		if (positions[1] < positions[3]) {
+			for (int i = positions[1] + 1; i < positions[3]; i++) {
+				if (board[positions[0]][i] != NULL) {
 					answer = false;
 				}
 			}
-		}else if(positions[3] < positions[1]){
-			for(int i = positions[3] + 1; i < positions[1]; i++){
-				if(board[positions[0]][i] != false){
+		} else if (positions[3] < positions[1]) {
+			for (int i = positions[3] + 1; i < positions[1]; i++) {
+				if (board[positions[0]][i] != false) {
 					answer = false;
 				}
 			}
 		}
-	}else if(positions[1] == positions[3]){
-		if(positions[0] < positions[2]){
-			for(int i = positions[0]+1; i < positions[2]; i++){
-				if(board[i][positions[1]] != NULL){
+	} else if (positions[1] == positions[3]) {
+		if (positions[0] < positions[2]) {
+			for (int i = positions[0] + 1; i < positions[2]; i++) {
+				if (board[i][positions[1]] != NULL) {
 					answer = false;
 				}
 			}
-		}else if(positions[2] < positions[0]){
-			for(int i = positions[2] + 1; i < positions[0]; i++){
-				if(board[i][positions[1]] != NULL){
+		} else if (positions[2] < positions[0]) {
+			for (int i = positions[2] + 1; i < positions[0]; i++) {
+				if (board[i][positions[1]] != NULL) {
 					answer = false;
 				}
 			}
-		}	
-	}	
+		}
+	}
 	return answer;
 }
 

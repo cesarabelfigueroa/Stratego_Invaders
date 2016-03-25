@@ -6,21 +6,21 @@
 using std::string;
 using std::stringstream;
 
-Coronel::Coronel(int player , int range):Token(player, range){
-	
-}
-
-Coronel::~Coronel(){
+Coronel::Coronel(int player , int range): Token(player, range) {
 
 }
 
-string Coronel::toString()const{
+Coronel::~Coronel() {
+
+}
+
+string Coronel::toString()const {
 	stringstream ss;
 	ss << "[ C ]";
 	return ss.str();
 }
 
-string Coronel::getType()const{
+string Coronel::getType()const {
 	stringstream ss;
 	ss << "C";
 	return ss.str();

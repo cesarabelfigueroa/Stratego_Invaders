@@ -6,20 +6,20 @@
 using std::string;
 using std::stringstream;
 
-Lake::Lake(int player, int range):Token(player,range){
+Lake::Lake(int player, int range): Token(player, range) {
 
 }
 
-Lake::~Lake(){
+Lake::~Lake() {
 
 }
 
-string Lake::toString()const{
+string Lake::toString()const {
 	stringstream ss;
 	ss << "[ K ]";
 	return ss.str();
 }
 
-bool Lake::movementValidations()const{
+bool Lake::movementValidations()const {
 	return false;
 }

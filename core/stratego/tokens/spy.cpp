@@ -6,21 +6,21 @@
 using std::string;
 using std::stringstream;
 
-Spy::Spy(int player, int range): Token(player, range){
-	
-}
-
-Spy::~Spy(){
+Spy::Spy(int player, int range): Token(player, range) {
 
 }
 
-string Spy::toString()const{
+Spy::~Spy() {
+
+}
+
+string Spy::toString()const {
 	stringstream ss;
 	ss << "[ P ]";
 	return ss.str();
 }
 
-string Spy::getType()const{
+string Spy::getType()const {
 	stringstream ss;
 	ss << "P";
 	return ss.str();

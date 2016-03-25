@@ -6,21 +6,21 @@
 using std::string;
 using std::stringstream;
 
-Minelayer::Minelayer(int player, int range):Token(player,range){
-	
-}
-
-Minelayer::~Minelayer(){
+Minelayer::Minelayer(int player, int range): Token(player, range) {
 
 }
 
-string Minelayer::toString()const{
+Minelayer::~Minelayer() {
+
+}
+
+string Minelayer::toString()const {
 	stringstream ss;
 	ss << "[ X ]";
 	return ss.str();
 }
 
-string Minelayer::getType()const{
+string Minelayer::getType()const {
 	stringstream ss;
 	ss << "X";
 	return ss.str();

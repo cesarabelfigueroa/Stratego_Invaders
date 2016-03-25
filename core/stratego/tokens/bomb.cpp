@@ -6,25 +6,25 @@
 using std::string;
 using std::stringstream;
 
-Bomb::Bomb(int player, int range):Token(player, range){
-	
-}
-
-Bomb::~Bomb(){
+Bomb::Bomb(int player, int range): Token(player, range) {
 
 }
 
-string Bomb::toString()const{
+Bomb::~Bomb() {
+
+}
+
+string Bomb::toString()const {
 	stringstream ss;
 	ss << "[ B ]";
 	return ss.str();
 }
 
-bool Bomb::movementValidations(Token*** board,int positions[])const{
+bool Bomb::movementValidations(Token*** board, int positions[])const {
 	return false;
 }
 
-string Bomb::getType()const{
+string Bomb::getType()const {
 	stringstream ss;
 	ss << "B";
 	return ss.str();

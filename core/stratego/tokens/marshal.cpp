@@ -6,21 +6,21 @@
 using std::string;
 using std::stringstream;
 
-Marshal::Marshal(int player, int range): Token(player, range){
-	
-}
-
-Marshal::~Marshal(){
+Marshal::Marshal(int player, int range): Token(player, range) {
 
 }
 
-string Marshal::toString()const{
+Marshal::~Marshal() {
+
+}
+
+string Marshal::toString()const {
 	stringstream ss;
 	ss << "[ M ]";
 	return ss.str();
 }
 
-string Marshal::getType()const{
+string Marshal::getType()const {
 	stringstream ss;
 	ss << "M";
 	return ss.str();

@@ -6,22 +6,22 @@
 using std::string;
 using std::stringstream;
 
-Captain::Captain(int player, int range):Token(player, range){
-	
-}
-
-Captain::~Captain(){
+Captain::Captain(int player, int range): Token(player, range) {
 
 }
 
-string Captain::toString()const{
+Captain::~Captain() {
+
+}
+
+string Captain::toString()const {
 	stringstream ss;
 	ss << "[ A ]";
 	return ss.str();
 }
 
 
-string Captain::getType()const{
+string Captain::getType()const {
 	stringstream ss;
 	ss << "A";
 	return ss.str();

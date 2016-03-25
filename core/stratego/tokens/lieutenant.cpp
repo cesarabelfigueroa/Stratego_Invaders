@@ -6,21 +6,21 @@
 using std::string;
 using std::stringstream;
 
-Lieutenant::Lieutenant(int player, int range): Token(player, range){
-	
-}
-
-Lieutenant::~Lieutenant(){
+Lieutenant::Lieutenant(int player, int range): Token(player, range) {
 
 }
 
-string Lieutenant::toString()const{
+Lieutenant::~Lieutenant() {
+
+}
+
+string Lieutenant::toString()const {
 	stringstream ss;
 	ss << "[ T ]";
 	return ss.str();
 }
 
-string Lieutenant::getType()const{
+string Lieutenant::getType()const {
 	stringstream ss;
 	ss << "T";
 	return ss.str();
