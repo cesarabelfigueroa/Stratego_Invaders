@@ -1,4 +1,5 @@
 #include "token.h"
+#include <allegro5/allegro.h>
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -8,7 +9,7 @@ using std::ostream;
 using std::stringstream;
 
 Token::Token(int player, int range): range(range), player(player) {
-
+	
 }
 
 Token::~Token() {
@@ -55,3 +56,8 @@ string Token::getType()const {
 	ss << "*";
 	return ss.str();
 }
+
+void Token::drawBitmap(int x, int y)const{
+	al_draw_scaled_bitmap(picture,0,0,al_get_bitmap_height(picture),al_get_bitmap_width(picture), x, y, 60,60,0);
+}
+

@@ -17,6 +17,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <typeinfo>
+#include <cstring>
 #include <cctype>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
@@ -26,8 +27,6 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_native_dialog.h>
-
-
 #include <cstdio>
 
 using std::vector;
@@ -41,59 +40,31 @@ void applyFormations(Token***, int, int);
 void bombFormation(Token***, int);
 void offensiveFormation(Token***, int);
 void fillBoardRandomly(Token***, vector<Token*>&, int);
-void showBoard(Token***, int);
+void showBoard(Token***,ALLEGRO_FONT*, int);
+void showSymbology(ALLEGRO_FONT*);
 bool isKeepPlaying(Token*** , int);
 void assaultFormation(Token***, int);
 int lettersToNumbers(char);
+char numbersToLetters(int);
+int getCoordenates();
 bool verifyCoordenates(int[]);
 bool verifyActualPosition(Token***, int, int, int);
 int verifyNextPosition(Token***, int, int, int);
 void move(Token***, int[]);
+int showFormations();
+void writeMessage(char[]);
 void destroyBoard(Token***);
+bool quit(int);
+void showInstructions(ALLEGRO_FONT*);
 ALLEGRO_DISPLAY* initScreen();
 ALLEGRO_SAMPLE* initSample(string);
 
 int main(int argc, char*argv[]) {
-	bool evaluateKey = false;
-	ALLEGRO_DISPLAY* display = initScreen();
-	ALLEGRO_EVENT_QUEUE* event_queue;
-	ALLEGRO_EVENT event;
-	ALLEGRO_BITMAP* background = al_load_bitmap("assets/sprites/backgrounds/menu.png");
-	ALLEGRO_BITMAP* battle = al_load_bitmap("assets/sprites/backgrounds/battle.jpg");
-	ALLEGRO_FONT* font = al_load_font("assets/fonts/orbitron-black.ttf", 30, 0);
-	al_draw_bitmap(background, 0, 0, 0);
-	al_draw_text(font, al_map_rgb(250, 167, 230), 400, 300, 0, "Press space to start");
-	event_queue = al_create_event_queue();	
-	al_flip_display();
-
-		
-	while(!evaluateKey){
-		al_register_event_source(event_queue, al_get_display_event_source(display));
-		al_register_event_source(event_queue, al_get_keyboard_event_source());
-		al_wait_for_event(event_queue, &event);
-		if(event.keyboard.keycode == ALLEGRO_KEY_SPACE){
-			al_draw_bitmap(battle, 0, 0, 0);
-			al_flip_display();
-			evaluateKey = true;		
-		}
-	}
-		
-	
-	al_rest(10.0);
-	al_destroy_display(display);
-	al_destroy_bitmap(background);
-	al_destroy_event_queue(event_queue);
-
-
-
-
-
-
-
-	/*int before = 2;
+	int before = 2;
 	int choice;
+	int continueAsking = 2;
 	int x0 = 0, y0 = 0, x1 = 0, y1 = 0;
-	char coordenatesInLetters[5];
+	char* coordenatesInLetters = new char[4];
 	int coordenatesInNumbers[4];
 	int nextPosition = 3;
 	bool correctMovement = false;
@@ -102,56 +73,147 @@ int main(int argc, char*argv[]) {
 	bool correctCoordenates = false;
 	Token*** board = createBoard();
 	int player = 1;
+	bool evaluateKey = false;
+	ALLEGRO_DISPLAY* display[2];
+	display[0] = initScreen(); 
+	ALLEGRO_EVENT_QUEUE* event_queue = NULL;
+	ALLEGRO_EVENT event;
+	ALLEGRO_BITMAP* background = al_load_bitmap("assets/sprites/backgrounds/menu.png");
+	ALLEGRO_BITMAP* battle = al_load_bitmap("assets/sprites/backgrounds/battle.jpg");
+	ALLEGRO_BITMAP* menu = al_load_bitmap("assets/sprites/backgrounds/menu2.jpg");
+	ALLEGRO_BITMAP* menu2 = al_load_bitmap("assets/sprites/backgrounds/menu3.jpg");
+	ALLEGRO_FONT* font = al_load_font("assets/fonts/orbitron-black.ttf", 30, 0);
 
-	initializeBoard(board);
+	al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+	al_draw_bitmap(background, 0, 0, 0);
+	al_draw_text(font, al_map_rgb(0, 0, 0), 400, 300, 0, "Press SPACE to continue");
+	
+	initializeBoard(board);	
+	event_queue = al_create_event_queue();	
+	al_flip_display();
+	
+	
+	while(!evaluateKey){
+		al_register_event_source(event_queue, al_get_display_event_source(display[0]));
+		al_register_event_source(event_queue, al_get_keyboard_event_source());
+		al_get_next_event(event_queue, &event);
+		if(event.keyboard.keycode == ALLEGRO_KEY_SPACE){
+			display[1] = initScreen();
+			al_draw_bitmap(menu, 0, 0, 0);
+			al_draw_text(font, al_map_rgb(0, 0, 0), 20, 20, 0, "Formations ---> Jugador1");
+			al_draw_text(font, al_map_rgb(0, 0, 0), 100, 90, 0, "Defensive Formation -- Press ENTER");
+			al_draw_text(font, al_map_rgb(0, 0, 0), 100, 190, 0, "Normal Formation -- Press SPACE");
+			al_draw_text(font, al_map_rgb(0, 0, 0), 100, 290, 0, "Offensive Formation -- Press ESCAPE");
+			al_flip_display();
+			evaluateKey = true;		
+		}
+	}
+	al_destroy_event_queue(event_queue);
 
-	for (int counter = 1; counter < 3; ++counter){
-		cout << "BIENVENIDO A STRATEGO" << endl;
-		cout << "Antes de empezar, cada jugador debe elegir una formacion inicial! " << endl;
-		cout << "1. Formacion defensiva con bombas." << endl;
-		cout << "2. Formacion defensiva con bombas y escolta de alto rango." << endl;
-		cout << "3. Formacion ofensiva con guerreros de alto rango al frente." << endl;
-		cout << "Seleccione una opcion: ";
-		cin >> choice;
-		if(choice > 0 && choice <= 3){
-			applyFormations(board,choice,counter);
-		}else{
-			cout << "Opción inválida." << endl;
+	for(int i = 1; i < 3; i++){
+		
+		choice = showFormations();
+		applyFormations(board, choice, i);
+		if(i == 1){
+			al_draw_bitmap(menu2, 0, 0, 0);
+			al_draw_text(font, al_map_rgb(0, 0, 0), 20, 20, 0, "Formations ---> Jugador2");
+			al_draw_text(font, al_map_rgb(0, 0, 0), 100, 90, 0, "Defensive Formation -- Press ENTER");
+			al_draw_text(font, al_map_rgb(0, 0, 0), 100, 190, 0, "Normal Formation -- Press SPACE");
+			al_draw_text(font, al_map_rgb(0, 0, 0), 100, 290, 0, "Offensive Formation -- Press ESCAPE");
+			al_flip_display();
 		}
 	}
 
+	showInstructions(font);
+
 	while(continuePlaying){
-		cout << "***********JUGADOR " << player << " *************" << endl;
-		showBoard(board,player);
+		al_draw_bitmap(battle,0,0,0);
+		showBoard(board,font,player);
+		al_flip_display();
 		while(!correctMovement){
 			while(nextPosition == 3){
 				while(!verifyCurrentPosition){
 					while(!correctCoordenates){
-						cout << "Ingrese la jugada segun el tablero: ";
-						cin >> coordenatesInLetters;
-						x0 = lettersToNumbers(coordenatesInLetters[1]);
-						y0 = lettersToNumbers(coordenatesInLetters[0]);
-						x1 = lettersToNumbers(coordenatesInLetters[3]);
-						y1 = lettersToNumbers(coordenatesInLetters[2]);
-						coordenatesInNumbers[0] = x0;
-						coordenatesInNumbers[1] = y0;
-						coordenatesInNumbers[2] = x1;
-						coordenatesInNumbers[3] = y1;
+						while(continueAsking == 2){
+							al_show_native_message_box(display[1], "Stratego" , "","Ingrese un numero segun el tablero: ", 
+								"Continuar", ALLEGRO_MESSAGEBOX_QUESTION);
+							x0 = getCoordenates();
+								if(quit(x0)){
+										al_destroy_display(display[0]);
+										al_destroy_display(display[1]);
+										al_destroy_bitmap(background);
+										al_destroy_bitmap(battle);
+										al_destroy_bitmap(menu);
+										delete[] coordenatesInLetters;
+										destroyBoard(board);
+										return 0;
+									}
+							al_show_native_message_box(display[1], "Stratego" , "","Ingrese un numero segun el tablero: ", 
+								"Continuar", ALLEGRO_MESSAGEBOX_QUESTION);
+							y0 = getCoordenates();
+								if(quit(y0)){
+										al_destroy_display(display[0]);
+										al_destroy_display(display[1]);
+										al_destroy_bitmap(background);
+										al_destroy_bitmap(battle);
+										al_destroy_bitmap(menu);
+										delete[] coordenatesInLetters;
+										destroyBoard(board);
+										return 0;
+									}
+							al_show_native_message_box(display[1], "Stratego" , "","Ingrese un numero segun el tablero: ", 
+								"Continuar", ALLEGRO_MESSAGEBOX_QUESTION);
+							x1 = getCoordenates();
+								if(quit(x1)){
+										al_destroy_display(display[0]);
+										al_destroy_display(display[1]);
+										al_destroy_bitmap(background);
+										al_destroy_bitmap(battle);
+										al_destroy_bitmap(menu);
+										delete[] coordenatesInLetters;
+										destroyBoard(board);
+										return 0;
+									}
+							al_show_native_message_box(display[1], "Stratego" , "","Ingrese un numero segun el tablero: ", 
+								"Continuar", ALLEGRO_MESSAGEBOX_QUESTION);
+							y1 = getCoordenates();
+								if(quit(y1)){
+										al_destroy_display(display[0]);
+										al_destroy_display(display[1]);
+										al_destroy_bitmap(background);
+										al_destroy_bitmap(battle);
+										al_destroy_bitmap(menu);
+										delete[] coordenatesInLetters;
+										destroyBoard(board);
+										return 0;
+									}
+							coordenatesInNumbers[0] = x0;
+							coordenatesInNumbers[1] = y0;
+							coordenatesInNumbers[2] = x1;
+							coordenatesInNumbers[3] = y1;
+							for(int i = 0; i < 4; i++){
+								coordenatesInLetters[i] = numbersToLetters(coordenatesInNumbers[i]);
+							}
+							continueAsking = al_show_native_message_box(display[1], "Stratego" , "Sus coordenadas son estas?",coordenatesInLetters,
+								NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+						}
+						continueAsking = 2;
+						
 						correctCoordenates = verifyCoordenates(coordenatesInNumbers);
 						if(!correctCoordenates){
-							cout << "Posición inválida." << endl;
+							writeMessage("Posicion invalida");
 						}
 					}
 
 					verifyCurrentPosition = verifyActualPosition(board, x0, y0,player);
 					if(!verifyCurrentPosition){
-						cout << "En esta casilla no hay una pieza propia." << endl;
+						writeMessage("En esta casilla no hay una pieza propia.");
 						correctCoordenates = false;
 					}
 				}
 				nextPosition = verifyNextPosition(board,x1, y1, player);
 				if(nextPosition == 3){
-					cout << "Movimiento inválido." << endl;
+					writeMessage("Movimiento inválido.");
 					verifyCurrentPosition = false;
 					correctCoordenates = false;
 				}
@@ -159,13 +221,13 @@ int main(int argc, char*argv[]) {
 
 			correctMovement = board[coordenatesInNumbers[0]][coordenatesInNumbers[1]]->movementValidations(board, coordenatesInNumbers);
 			if(!correctMovement){
-				cout << "Movimiento de pieza invalido" << endl;
+				writeMessage("Movimiento de pieza invalido");
 				verifyCurrentPosition = false;
 				correctCoordenates = false;
 				nextPosition = 3;
 			}
 		}
-
+		
 		move(board, coordenatesInNumbers);
 		correctMovement = false;
 		nextPosition = 3;
@@ -174,14 +236,34 @@ int main(int argc, char*argv[]) {
 		before = player;
 		player = before == 1 ? 2: 1;
 		continuePlaying = isKeepPlaying(board, player);
+
+		if(!continuePlaying){
+			al_draw_bitmap(battle,0,0,0);
+			al_draw_text(font, al_map_rgb(0, 0, 0), 300, 250, 0, "FELICIDADES");
+			if(player == 1)
+				al_draw_text(font, al_map_rgb(0, 0, 0), 300, 290, 0, "JUgador 2 has ganado");
+			else
+				al_draw_text(font, al_map_rgb(0, 0, 0), 300, 290, 0, "Jugador 1 has ganado");
+			al_flip_display();
+			al_rest(10.0);		
+		}
 	}
 
-	destroyBoard(board);*/
+	al_rest(5.0);
+	al_destroy_display(display[0]);
+	al_destroy_display(display[1]);
+	al_destroy_bitmap(background);
+	al_destroy_bitmap(battle);
+	al_destroy_bitmap(menu);
+	delete[] coordenatesInLetters;
+	destroyBoard(board);
 	return 0;
 }
 
 
+
 ALLEGRO_DISPLAY* initScreen() {
+		ALLEGRO_DISPLAY_MODE disp_mode;
 	if (!al_init()) {
 		fprintf(stderr, "failed to initialize allegro!\n");
 		throw "Error...!";
@@ -203,6 +285,8 @@ ALLEGRO_DISPLAY* initScreen() {
 	}
 
 	ALLEGRO_DISPLAY *display = NULL;
+	al_get_display_mode(al_get_num_display_modes()-1, &disp_mode);
+	al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
 	display = al_create_display(800, 600);
 
 	if (!display) {
@@ -211,6 +295,7 @@ ALLEGRO_DISPLAY* initScreen() {
 
 	al_set_window_title(display, "Stratego");
 	al_init_image_addon();
+	al_init_primitives_addon();
 	al_install_keyboard();
 	al_init_font_addon();
 	al_init_ttf_addon();
@@ -236,6 +321,67 @@ Token*** createBoard() {
 	return board;
 }
 
+void showInstructions(ALLEGRO_FONT* font){
+	ALLEGRO_BITMAP* instructions;
+	bool evaluateKey = false;
+
+	instructions = al_load_bitmap("assets/sprites/backgrounds/fight.jpg");
+	al_draw_bitmap(instructions,0,0,0);
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 20, 0, "STRATEGO INSTRUCTIONS");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 60, 0, " * ES un juego de conocimento parcial del entorno.");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 100, 0, " * Todas las piezas solo pueden mover una casilla, horizontal o vertical");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 140, 0, "   a excepcion del explorador que mueve como la torre de ajedrez");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 180, 0, " * Para comer, se verificara los valores de ataque de las piezas");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 220, 0, " * Ganara la pieza con un mayor valor de ataque");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 260, 0, " * El minador puede desactivar las bombas");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 300, 0, " * El espia es el unico que puede vencer al mariscal");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 340, 0, " * La bomba destruye a todas las piezas, menos al minador");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 380, 0, " * Las bombas y las banderas no pueden moverse.");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 420, 0, " * Gana el jugador que elimine la bandera del contrario");
+	al_draw_text(font, al_map_rgb(0, 0, 0), 30, 460, 0, " * Presiona enter para continuar");
+	al_flip_display();
+
+	ALLEGRO_EVENT_QUEUE* event_queue = NULL;
+	event_queue = al_create_event_queue();
+
+	ALLEGRO_EVENT event;
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
+
+	while(!evaluateKey){
+		al_get_next_event(event_queue,&event);
+		if(event.type == ALLEGRO_EVENT_KEY_DOWN){
+			if(event.keyboard.keycode == ALLEGRO_KEY_ENTER){
+				evaluateKey = true;
+			}
+		}
+	}
+}
+
+int showFormations(){
+	bool evaluateKey = false;
+	int answer;
+	ALLEGRO_EVENT_QUEUE *event_queue2 = NULL;
+	event_queue2 = al_create_event_queue();
+	
+	ALLEGRO_EVENT chooseFormation;	
+	al_register_event_source(event_queue2, al_get_keyboard_event_source());
+	while(!evaluateKey){
+		al_get_next_event(event_queue2,&chooseFormation);	
+		if(chooseFormation.type == ALLEGRO_EVENT_KEY_DOWN){
+		 	if(chooseFormation.keyboard.keycode == ALLEGRO_KEY_SPACE){
+		 		answer = 1;
+				evaluateKey = true;
+			 }else if(chooseFormation.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
+				answer = 2;
+				evaluateKey = true;
+			}else if(chooseFormation.keyboard.keycode == ALLEGRO_KEY_ENTER){
+				answer = 3;
+				evaluateKey = true;
+			}
+		}
+	}
+	return answer;
+}
 void initializeBoard(Token*** board) {
 	for (int i = 0; i < 10; i++) {
 		for (int k = 0; k < 10; k++) {
@@ -254,6 +400,33 @@ void applyFormations(Token*** board, int choice, int player) {
 	}
 }
 
+char numbersToLetters(int number){
+	char answer;
+
+	if(number == 0){
+		answer = 48;
+	}else if(number == 1){
+		answer = 49;
+	}else if(number == 2){
+		answer = 50;
+	}else if(number == 3){
+		answer = 51;
+	}else if(number == 4){
+		answer = 52;
+	}else if(number == 5){
+		answer = 53;
+	}else if(number == 6){
+		answer = 54;
+	}else if(number == 7){
+		answer = 55;
+	}else if(number == 8){
+		answer = 56;
+	}else if(number == 9){
+		answer = 57;
+	}
+	
+	return answer;
+}
 void offensiveFormation(Token*** board, int player) {
 	vector<Token*> tokens;
 	if (player == 1) {
@@ -508,6 +681,15 @@ int lettersToNumbers(char letter) {
 
 }
 
+bool quit(int number){
+	if(number == 20){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
 bool verifyCoordenates(int coordenates[]) {
 	bool answer = true;
 	for (int i = 0; i < 4; i++) {
@@ -542,20 +724,19 @@ int verifyNextPosition(Token*** board, int row, int column, int player) {
 }
 
 bool isKeepPlaying(Token*** board, int player) {
+	bool answer = false;
 	for (int i = 0; i < 10; ++i) {
 		for (int j = 0; j < 10; ++j) {
 			if (board[i][j]) {
-				if (board[i][j] -> getType() != "F" && board[i][j]-> getType() != "B" && player != board[i][j] -> getPlayer()) {
-					return true;
+				if (board[i][j] -> getType() == "F"  && player == board[i][j] -> getPlayer()) {
+					answer = true;
 				}
 			}
 		}
 	}
-	return false;
+	return answer;
 
 }
-
-
 
 void move(Token*** board, int coordenates[]) {
 	if (!board[coordenates[2]][coordenates[3]] || board[coordenates[2]][coordenates[3]] -> getType() == "*") {
@@ -582,25 +763,170 @@ void move(Token*** board, int coordenates[]) {
 	}
 }
 
-void showBoard(Token*** board, int player) {
-	int actual = player;
-	int before = player == 1 ? 2 : 1;
-	for (int i = 0; i < 10; i++) {
-		cout << 9 - i;
-		cout << " ";
-		for (int k = 0; k < 10; k++) {
-			if (board[i][k] == NULL) {
-				cout << "[   ]";
-			} else if (board[i][k] -> getPlayer() == actual) {
-				cout << *board[i][k];
+int getCoordenates(){
+	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+	event_queue = al_create_event_queue();
+	bool evaluateKey = false;
+	int answer = 0;
 
-			} else if (board[i][k] -> getPlayer() == before) {
-				cout << "[ * ]";
+	ALLEGRO_EVENT event;
+	al_register_event_source(event_queue,al_get_keyboard_event_source());
+
+	while(!evaluateKey){
+		al_get_next_event(event_queue,&event);
+		if(event.type == ALLEGRO_EVENT_KEY_DOWN){
+			if(event.keyboard.keycode == ALLEGRO_KEY_0){
+				answer = 0;
+				evaluateKey = true;
+			}else if(event.keyboard.keycode == ALLEGRO_KEY_1){
+				answer = 1;
+				evaluateKey = true;
+			}else if(event.keyboard.keycode == ALLEGRO_KEY_2){
+				answer = 2;
+				evaluateKey = true;
+			}else if(event.keyboard.keycode == ALLEGRO_KEY_3){
+				answer = 3;
+				evaluateKey = true;
+			}else if(event.keyboard.keycode == ALLEGRO_KEY_4){
+				answer = 4;
+				evaluateKey = true;
+			}else if(event.keyboard.keycode == ALLEGRO_KEY_5){
+				answer = 5;
+				evaluateKey = true;
+			}else if(event.keyboard.keycode == ALLEGRO_KEY_6){
+				answer = 6;
+				evaluateKey = true;
+			}else if(event.keyboard.keycode == ALLEGRO_KEY_7){
+				answer = 7;
+				evaluateKey = true;
+			}else if(event.keyboard.keycode == ALLEGRO_KEY_8){
+				answer = 8;
+				evaluateKey = true;
+			}else if(event.keyboard.keycode == ALLEGRO_KEY_9){
+				answer = 9;
+				evaluateKey = true;
+			}else if(event.keyboard.keycode == ALLEGRO_KEY_ESCAPE){
+				answer = 20;
+				evaluateKey = true;
 			}
 		}
-		cout << endl;
 	}
-	cout << "    A    B    C    D    E    F    G    H    I    J" << endl;
+	//al_show_native_message_box(NULL, "Stratego","Movement", "Coordenada ingresada con exito" ,"Continuar" , ALLEGRO_MESSAGEBOX_QUESTION);
+	return answer;
+}
+
+void showBoard(Token*** board, ALLEGRO_FONT* font, int player) {
+	int actual = player;	
+	int before = player == 1 ? 2 : 1;
+	int x = 0 , y = 0;
+	char numbers[10];
+	int code = 48;
+	ALLEGRO_BITMAP* enemy;
+	ALLEGRO_BITMAP* empty;
+	enemy = al_load_bitmap("assets/sprites/Tokens/unknown.png");
+	empty = al_load_bitmap("assets/sprites/Tokens/blank.png");
+
+	al_draw_text(font, al_map_rgb(0, 0, 0), 120, 30, 0, "Para salir presione ESCAPE");
+
+	for(int i = 0; i < 10; i++){
+		numbers[i] = code;
+		code++;
+	}
+
+	y = 80;
+
+	for(int i = 0; i < 10; i++){	
+		char temporal[2];
+		temporal[0] = numbers[i];
+		al_draw_text(font, al_map_rgb(0, 0, 0), 90, y, 0, temporal);
+		y+=60;
+	}
+
+	x = 2;
+	y = 1;
+
+	for(int i = 0; i < 10; i++){
+		for(int k = 0; k < 10; k++){
+			if(board[i][k] == NULL){
+				al_draw_scaled_bitmap(empty, 0,0, al_get_bitmap_height(empty), al_get_bitmap_width(empty),x*60, y*60,60,60,0);
+			}else if(board[i][k] -> getPlayer() == actual){
+				board[i][k] -> drawBitmap(x*60,y*60);
+			}else if(board[i][k] ->getPlayer() == before){
+				al_draw_scaled_bitmap(enemy, 0,0, al_get_bitmap_height(enemy), al_get_bitmap_width(enemy),x*60, y*60,60,60,0);
+			}
+			x++;
+		}
+		y++;
+		x=2;
+	}
+
+	x = 150;
+	y = 11;
+
+	for(int i = 0; i < 10; i++){	
+		char temporal[2];
+		temporal[0] = numbers[i];
+		al_draw_text(font, al_map_rgb(0, 0, 0), x, y*60, 0, temporal);
+		x+=60;
+	}
+
+	showSymbology(font);
+}
+
+void showSymbology(ALLEGRO_FONT* font){
+	int x = 900;
+	int y = 0;
+	vector<Token*> list;
+	list.push_back(new Captain(1));
+	list.push_back(new Commander(1));
+	list.push_back(new General(1));
+	list.push_back(new Flag(1));
+	list.push_back(new Bomb(1));
+	list.push_back(new Lieutenant(1));
+	list.push_back(new Coronel(1));
+	list.push_back(new Spy(1));
+	list.push_back(new Explorer(1));
+	list.push_back(new Minelayer(1));
+	list.push_back(new Sergeant(1));
+	list.push_back(new Marshal(1));
+
+	for(int i = 0; i < list.size(); i++){
+		list[i] -> drawBitmap(x,y);
+		y+=60;
+	}
+
+	x = 961;
+	y = 30;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Captain (6)");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Commander (7)");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "General (9)");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Flag");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Bomb");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Lieutenant (5)");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Coronel (8)");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Spy (1)");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Explorer (2)");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Minelayer (3)");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Sergeant (4)");
+	y += 60;
+	al_draw_text(font, al_map_rgb(0, 0, 0), x, y, 0, "Marshall (10)");
+	y += 60;
+
+
+}
+
+void writeMessage(char word[]){
+	al_show_native_message_box(NULL,"STRATEGO", "ERROR",word ,"Continuar", ALLEGRO_MESSAGEBOX_ERROR);
 }
 
 void destroyBoard(Token*** board) {
