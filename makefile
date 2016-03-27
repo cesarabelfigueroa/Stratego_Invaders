@@ -1,10 +1,13 @@
 productions: space_invaders stratego clean
 
-space_invaders: space_invaders.o
+space_invaders: space_invaders.o shot.o 
 	g++ space_invaders.o -o productions/space_invaders/space_invaders $(`pkg-config --libs allegro-5.0`) -lallegro -lallegro_ttf  -lallegro_primitives -lallegro_main -lallegro_font -lallegro_image -lallegro_audio -lallegro_acodec
 
 space_invaders.o:	core/space_invaders/space_invaders.cpp 
 	g++ -c core/space_invaders/space_invaders.cpp 
+
+shot.o: core/space_invaders/items/shot.h core/space_invaders/items/shot.cpp
+	g++ -c core/space_invaders/items/shot.cpp
 
 stratego: stratego.o marshal.o token.o general.o coronel.o commander.o captain.o lieutenant.o sergeant.o minelayer.o explorer.o spy.o bomb.o flag.o lake.o
 	g++ stratego.o marshal.o token.o general.o coronel.o commander.o captain.o lieutenant.o sergeant.o minelayer.o explorer.o spy.o bomb.o flag.o lake.o -o productions/stratego/stratego $(`pkg-config --libs allegro-5.0`) -lallegro -lallegro_ttf  -lallegro_primitives -lallegro_main -lallegro_font -lallegro_image -lallegro_audio -lallegro_acodec -lallegro_dialog 
