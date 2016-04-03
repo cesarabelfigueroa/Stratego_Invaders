@@ -5,10 +5,10 @@
 using std::string;
 
 class Marshal: public Token {
-public:
-	Marshal(int, int = 10);
-	~Marshal();
-	virtual string toString()const;
-	virtual string getType()const;
+	public:
+		Marshal(int, int = 10);
+		~Marshal();
+		virtual string toString()const;
+		virtual string getType()const;
 
 };
